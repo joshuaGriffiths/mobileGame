@@ -9,20 +9,13 @@
 import SpriteKit
 import GameplayKit
 
-//***CONSTANTS***//
+//***GameMode***//
 enum GameState {
     
     case playing
     case menu
     case setting
     static var current = GameState.playing
-}
-
-//***Physics***//
-struct phys { //Physics Category
-    
-    static let none: UInt32 = 0x1 << 0
-    static let cube: UInt32 = 0x1 << 1
 }
 
 //***Touch***//
@@ -32,17 +25,13 @@ struct tch { //start and end touch points
     static var end = CGPoint()
 }
 
+//GLOBALS FOR SETTING MANIPULATION
 var numTowers = 2
+var numLifes = 3//number of lives the player has (should be moved to player class)
 let player:Player = Player()
 
 class GamePlay: SKScene, SKPhysicsContactDelegate {
     
-    //Player and Tower Objects
-//    private var spawnContoller = SpawnItems()
-//    private var player : Player?
-    
-    //(Temp Cube Object)
-    var cube: SKSpriteNode!
     
     //LABELS
     var lifeLabel: SKLabelNode?
@@ -50,30 +39,27 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     //Variables
     var pi = CGFloat(Double.pi)
-    var numLifes = 3//number of lives the player has (should be moved to player class)
-    var score = 1
+
+    var score = 0
     var hasGone = false  // to detect if cube has left (should be removed)
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
     
     
-    
-    
-    
+    //SET UP SCENE
     override func didMove(to view: SKView) {
         
+        //Create contact world
         self.physicsWorld.contactDelegate = self
         
+        //INitialize Labels
         lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
         lifeLabel?.text = String(numLifes)
         scoreLabel = childNode(withName: "scoreLabel") as? SKLabelNode!
         scoreLabel?.text = String(score)
         
-        //Create Game Enviroment
-        //setupGame();
+        //Spawn towers and players
         spawnTowers()
         spawnPlayer()
-        //let tempVec = CGVector(dx: 50, dy: 50)
-        //player.physicsBody?.applyImpulse(tempVec)
     }
     
     
@@ -89,11 +75,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             //IF WE TOUCH THE CUBE
             if GameState.current == .playing {
 
-//                if cube.contains(location){
-//
-//                    tch.start = location
-//                }
-//
                 if player.contains(location){
 
                     tch.start = location
@@ -107,10 +88,9 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                         scene.scaleMode = .aspectFill
                         
                         // Present the scene
-                        view!.presentScene(scene,transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(2)))
+                        view!.presentScene(scene,transition: SKTransition.doorsCloseVertical(withDuration: TimeInterval(2)))
                     }
                 }
-                
             }
         }
     }
@@ -129,10 +109,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
 
                 tch.end = location
                 firePlayer()
-                //player?.fire(tchStrt: tch.start,tchEnd: tch.end);
                 hasGone = true
-
-
             }
         }
     }
@@ -143,8 +120,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
 
         var firstBody = SKPhysicsBody();
         var secondBody = SKPhysicsBody();
-        //var thirdBody = SKPhysicsBody();
 
+        //This is to detect what hits what
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             firstBody = contact.bodyA
             secondBody = contact.bodyB
@@ -156,7 +133,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         if firstBody.node?.name == "Player" && secondBody.node?.name == "ground" {
             NSLog("Player and ground Conatact")
         
-        
          }
 
         if firstBody.node?.name == "Player" && secondBody.node?.name == "tower" {
@@ -167,9 +143,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             spawnMiniCubes(towX: towerX!, towY: towerY)
             numLifes += 1
-            
-            
-            //lifeLabel?.text = String(numLifes)
 
         }
         
@@ -182,9 +155,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             spawnMiniCubes(towX: towerX!, towY: towerY)
             
-            
-            //lifeLabel?.text = String(numLifes)
-            
         }
         
         
@@ -193,52 +163,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             score += 1
             scoreLabel?.text = String(score)
             
-            
         }
-        
-        
-       
-        
-        
     }
-    
-    
-    
-    
-    
-    
-    //SETUP GAME ENVIROMENT
-//    private func setupGame (){
-//
-//        //cube.removeFromParent()
-//
-//        //Gamestate
-//        GameState.current = .playing;
-//
-//        lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
-//        lifeLabel?.text = String(numLifes)
-//
-//
-//        physicsWorld.contactDelegate = self;
-//
-//        //Create Playing Cube for the first time
-//        cube = childNode(withName: "cube") as! SKSpriteNode
-//        //cube.name = "Player"
-//        originalCubePos = cube.position
-//        cube.physicsBody?.categoryBitMask = ColliderType.PLAYER
-//
-//        //Sets a physics bound around the frame of the iphone
-//        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-//
-//        //ABSTRACTED PLAYER CLASS is bugging running it within gamescene for now
-//        //player = childNode(withName: "cube") as? Player!
-//        //player?.initPlayer();
-//
-//
-//        spawnTowers();
-//        spawnTowers();
-//        spawnTowers();
-//    }
     
     
     
@@ -264,23 +190,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
-    //SPAWNS RANDOM TOWERS
-//    func spawnTowers(){
-//
-////        let itemOne: SKSpriteNode?;
-////        itemOne = spawnContoller.spawnItems().0
-////        let itemTwo: SKSpriteNode?;
-////        itemTwo = spawnContoller.spawnItems().1
-////        self.scene?.addChild(itemOne!)
-////        self.scene?.addChild(itemTwo!)
-//          self.scene?.addChild(spawnContoller.spawnItems())
-//
-//    }
-    
-    
-    
-    
-    
     //Replace the cube
     override func update(_ currentTime: TimeInterval) {
         if let cubePhysicsBody = player.physicsBody {
@@ -294,15 +203,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 }
                 
                 player.position = originalCubePos
-                //setupGame()
                 hasGone = false
 
                 }
             }
         }
-    
-    
-    
     
     
     
@@ -318,6 +223,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    //Spawn Towers that will have the target
     func spawnTowers(){
         
 
@@ -336,19 +242,14 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    
-    
-    
+    //Spawn the player
     func spawnPlayer(){
         originalCubePos = player.position
         addChild(player)
     }
     
     
-    
-    
-    
-    
+    //Spawn the minicubes on contact
     func spawnMiniCubes(towX: CGFloat, towY: CGFloat){
         
         
@@ -367,6 +268,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    //Helper function returns random number
     func randNumb(firstNum: CGFloat, secNum: CGFloat)->CGFloat{
         
         return CGFloat(arc4random()) / CGFloat(UINT32_MAX) * abs(firstNum - secNum) + min(firstNum,secNum)
