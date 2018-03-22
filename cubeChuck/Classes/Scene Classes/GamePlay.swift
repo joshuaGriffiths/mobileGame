@@ -108,7 +108,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             if GameState.current == .playing && !player.contains(location) {
 
                 tch.end = location
-                firePlayer()
+                player.fire()
                 hasGone = true
             }
         }
@@ -166,25 +166,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    
-    
-    
-    
-    //FIRE THE CUBE
-    func firePlayer(){
-        
-        let xChange = tch.end.x - tch.start.x
-        let yChange = (tch.end.y -  tch.start.y)/5
-        
-        let angle = (atan(xChange / (tch.end.y - tch.start.y)) * 180 / pi)
-        //Because we limit the yvalue of our toss we need to account for that in our x
-        let ammendedX = (tan(angle * pi / 180) * yChange) * 0.5 //Play with this
-        
-        //Throw Cube
-        let throwVec = CGVector(dx: ammendedX, dy: yChange)
-        player.physicsBody?.affectedByGravity = true
-        player.physicsBody?.applyImpulse(throwVec, at: tch.start)
-    }
     
     
     
