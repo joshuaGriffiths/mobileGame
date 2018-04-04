@@ -30,6 +30,7 @@ var numTowers = 2
 var numLifes = 3//number of lives the player has (should be moved to player class)
 let player:Player = Player()
 var towerTop = SKShapeNode()
+var shotCounter = 0
 
 class GamePlay: SKScene, SKPhysicsContactDelegate {
     
@@ -58,7 +59,9 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         //Create contact world
         self.physicsWorld.contactDelegate = self
         
+        //SEE LINE 173 for Singelton Proof
         scoreSingeltonProof.value = 0
+        
         //INitialize Labels
         lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
         lifeLabel?.text = String(numLifes)
@@ -187,10 +190,18 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity <= 0.1 && hasGone && !hitTower {
                 
                 numLifes -= 1
+                shotCounter += 1
                 lifeLabel?.text = String(numLifes)
                 if numLifes == 0 {
                     
                     endGame()
+                }
+                
+                //FOR DIFICULTY
+                
+                if shotCounter % 2 == 0 {
+                    self.removeChildren(in: [self.childNode(withName: "tower")!])
+                    self.childNode(withName: "tower")
                 }
                 
                 player.position = originalCubePos
