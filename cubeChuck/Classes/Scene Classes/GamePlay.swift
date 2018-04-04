@@ -44,7 +44,9 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Variables
     var pi = CGFloat(Double.pi)
 
-    var score = 0
+    let score = Score.sharedInstance
+    let scoreSingeltonProof = Score.sharedInstance
+    
     var hasGone = false  // to detect if cube has left (should be removed)
     var hitTower = false // to detect if a cube has hit a
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
@@ -56,11 +58,12 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         //Create contact world
         self.physicsWorld.contactDelegate = self
         
+        scoreSingeltonProof.value = 0
         //INitialize Labels
         lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
         lifeLabel?.text = String(numLifes)
         scoreLabel = childNode(withName: "scoreLabel") as? SKLabelNode!
-        scoreLabel?.text = String(score)
+        scoreLabel?.text = String(scoreSingeltonProof.value)
         
         //Spawn towers and players
         spawnTowers()
@@ -136,14 +139,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
 
         if firstBody.node?.name == "Player" && secondBody.node?.name == "tower" {
              NSLog("Player and tower Conatact")
-            
-//            let towerY = (secondBody.node?.position.y)! + 250
-//            let towerX = secondBody.node?.position.x
-//
-//            spawnMiniCubes(towX: towerX!, towY: towerY)
-////            hitTower == true
-////            player.position = CGPoint(x: towerX!,y: towerY)
-//            numLifes += 1
+
 
         }
         
@@ -174,8 +170,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         if firstBody.node?.name == "minicube" && secondBody.node?.name == "ground" {
             NSLog("minicube and ground Conatact")
-            score += 1
-            scoreLabel?.text = String(score)
+            score.value += 1
+            scoreLabel?.text = String(score.value)
             
         }
     }
@@ -214,7 +210,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         finalScore_label =  childNode(withName: "FinalScore_label") as? SKLabelNode!
         finalScore_label?.zPosition = 6
         finalScore_score =  childNode(withName: "finalScore_score") as? SKLabelNode!
-        finalScore_score?.text = String(score)
+        finalScore_score?.text = String(score.value)
         finalScore_score?.zPosition = 6
         
         //PRINT GAME OVER

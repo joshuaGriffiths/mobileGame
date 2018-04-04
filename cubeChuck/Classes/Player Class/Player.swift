@@ -11,6 +11,7 @@ import SpriteKit
 class Player: SKSpriteNode {
 
     var pi = CGFloat(Double.pi)
+    static let sharedInstance = Player()
     
     init(){
         let texture = SKTexture(imageNamed: "cube")

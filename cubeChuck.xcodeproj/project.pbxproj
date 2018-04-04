@@ -23,6 +23,7 @@
 		485F86A92060454E00E58AC1 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485F86A82060454E00E58AC1 /* Settings.swift */; };
 		4870B8BE2062F8C500EF8320 /* MiniCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4870B8BD2062F8C500EF8320 /* MiniCube.swift */; };
 		488CAEA520753F18003FA208 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488CAEA420753F18003FA208 /* Bucket.swift */; };
+		488CAEA820755330003FA208 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488CAEA720755330003FA208 /* Score.swift */; };
 		48A75584206057E80021EA57 /* SpawnItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A75583206057E80021EA57 /* SpawnItems.swift */; };
 		48A755862060962C0021EA57 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A755852060962C0021EA57 /* Player.swift */; };
 		48FFC56F2061F6E900636E14 /* Tower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFC56E2061F6E900636E14 /* Tower.swift */; };
@@ -68,6 +69,7 @@
 		485F86A82060454E00E58AC1 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		4870B8BD2062F8C500EF8320 /* MiniCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniCube.swift; sourceTree = "<group>"; };
 		488CAEA420753F18003FA208 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		488CAEA720755330003FA208 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		48A75583206057E80021EA57 /* SpawnItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnItems.swift; sourceTree = "<group>"; };
 		48A755852060962C0021EA57 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		48FFC56E2061F6E900636E14 /* Tower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tower.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 		485F86AA2060519C00E58AC1 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				488CAEA6207552C2003FA208 /* Singeton */,
 				48A755822060577B0021EA57 /* Spawn Class */,
 				485F86AD2060520B00E58AC1 /* Scenes */,
 				485F86AC206051DA00E58AC1 /* Scene Classes */,
@@ -188,6 +191,14 @@
 				48225B98205C818C009D509A /* GameScene.sks */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		488CAEA6207552C2003FA208 /* Singeton */ = {
+			isa = PBXGroup;
+			children = (
+				488CAEA720755330003FA208 /* Score.swift */,
+			);
+			path = Singeton;
 			sourceTree = "<group>";
 		};
 		48A755822060577B0021EA57 /* Spawn Class */ = {
@@ -348,6 +359,7 @@
 				485F86A520603BAE00E58AC1 /* MainMenu.swift in Sources */,
 				48225B97205C818C009D509A /* AppDelegate.swift in Sources */,
 				485F86A92060454E00E58AC1 /* Settings.swift in Sources */,
+				488CAEA820755330003FA208 /* Score.swift in Sources */,
 				48FFC56F2061F6E900636E14 /* Tower.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
