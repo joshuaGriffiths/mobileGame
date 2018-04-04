@@ -22,6 +22,7 @@
 		485F86A72060449600E58AC1 /* SettingsScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 485F86A62060449600E58AC1 /* SettingsScene.sks */; };
 		485F86A92060454E00E58AC1 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485F86A82060454E00E58AC1 /* Settings.swift */; };
 		4870B8BE2062F8C500EF8320 /* MiniCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4870B8BD2062F8C500EF8320 /* MiniCube.swift */; };
+		488CAEA520753F18003FA208 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488CAEA420753F18003FA208 /* Bucket.swift */; };
 		48A75584206057E80021EA57 /* SpawnItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A75583206057E80021EA57 /* SpawnItems.swift */; };
 		48A755862060962C0021EA57 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A755852060962C0021EA57 /* Player.swift */; };
 		48FFC56F2061F6E900636E14 /* Tower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFC56E2061F6E900636E14 /* Tower.swift */; };
@@ -66,6 +67,7 @@
 		485F86A62060449600E58AC1 /* SettingsScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SettingsScene.sks; sourceTree = "<group>"; };
 		485F86A82060454E00E58AC1 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		4870B8BD2062F8C500EF8320 /* MiniCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniCube.swift; sourceTree = "<group>"; };
+		488CAEA420753F18003FA208 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		48A75583206057E80021EA57 /* SpawnItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnItems.swift; sourceTree = "<group>"; };
 		48A755852060962C0021EA57 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		48FFC56E2061F6E900636E14 /* Tower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tower.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				48A75583206057E80021EA57 /* SpawnItems.swift */,
 				48FFC56E2061F6E900636E14 /* Tower.swift */,
 				4870B8BD2062F8C500EF8320 /* MiniCube.swift */,
+				488CAEA420753F18003FA208 /* Bucket.swift */,
 			);
 			path = "Spawn Class";
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				48A75584206057E80021EA57 /* SpawnItems.swift in Sources */,
 				48A755862060962C0021EA57 /* Player.swift in Sources */,
 				48225B9D205C818C009D509A /* GamePlay.swift in Sources */,
+				488CAEA520753F18003FA208 /* Bucket.swift in Sources */,
 				4870B8BE2062F8C500EF8320 /* MiniCube.swift in Sources */,
 				48225B9F205C818C009D509A /* GameViewController.swift in Sources */,
 				485F86A520603BAE00E58AC1 /* MainMenu.swift in Sources */,

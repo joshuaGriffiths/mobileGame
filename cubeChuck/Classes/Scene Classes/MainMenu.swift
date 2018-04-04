@@ -23,7 +23,7 @@ class MainMenu: SKScene {
                     scene.scaleMode = .aspectFill
                     
                     // Present the scene
-                    view!.presentScene(scene,transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(2)))
+                    view!.presentScene(scene,transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(1)))
                 }
             }
             
@@ -34,7 +34,7 @@ class MainMenu: SKScene {
                     scene.scaleMode = .aspectFill
                     
                     // Present the scene
-                    view!.presentScene(scene,transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(2)))
+                    view!.presentScene(scene,transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(1)))
                 }
             }
 

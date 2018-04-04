@@ -18,7 +18,7 @@ class Tower: SKSpriteNode {
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
         self.name = "tower"
         self.zPosition = 5
-        self.physicsBody = SKPhysicsBody(rectangleOf: self.size);
+        self.physicsBody = SKPhysicsBody(rectangleOf: self.frame.size);
         self.physicsBody?.categoryBitMask = ColliderType.TOWER;
         self.physicsBody?.contactTestBitMask = ColliderType.PLAYER
         self.physicsBody?.affectedByGravity = false

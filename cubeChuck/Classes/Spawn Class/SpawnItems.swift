@@ -14,6 +14,7 @@ struct ColliderType {
     static let PLAYER: UInt32 = 0;
     static let TOWER: UInt32 = 1;
     static let MINICUBE: UInt32 = 2;
+    static let TOWERTOP: UInt32 = 3
 }
 
 class SpawnItems {

@@ -29,6 +29,7 @@ struct tch { //start and end touch points
 var numTowers = 2
 var numLifes = 3//number of lives the player has (should be moved to player class)
 let player:Player = Player()
+var towerTop = SKShapeNode()
 
 class GamePlay: SKScene, SKPhysicsContactDelegate {
     
@@ -36,12 +37,16 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //LABELS
     var lifeLabel: SKLabelNode?
     var scoreLabel: SKLabelNode?
+    var gameOver_label: SKLabelNode?
+    var finalScore_label: SKLabelNode?
+    var finalScore_score: SKLabelNode?
     
     //Variables
     var pi = CGFloat(Double.pi)
 
     var score = 0
     var hasGone = false  // to detect if cube has left (should be removed)
+    var hitTower = false // to detect if a cube has hit a
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
     
     
@@ -83,13 +88,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 //BACK BUTTON
                 if atPoint(location).name == "back" {
                     
-                    if let scene = MainMenu(fileNamed: "MainMenuScene") {
-                        // Set the scale mode to scale to fit the window
-                        scene.scaleMode = .aspectFill
-                        
-                        // Present the scene
-                        view!.presentScene(scene,transition: SKTransition.doorsCloseVertical(withDuration: TimeInterval(2)))
-                    }
+                    endGame()
                 }
             }
         }
@@ -138,16 +137,31 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         if firstBody.node?.name == "Player" && secondBody.node?.name == "tower" {
              NSLog("Player and tower Conatact")
             
-            let towerY = (secondBody.node?.position.y)! + 250
-            let towerX = secondBody.node?.position.x
-            
-            spawnMiniCubes(towX: towerX!, towY: towerY)
-            numLifes += 1
+//            let towerY = (secondBody.node?.position.y)! + 250
+//            let towerX = secondBody.node?.position.x
+//
+//            spawnMiniCubes(towX: towerX!, towY: towerY)
+////            hitTower == true
+////            player.position = CGPoint(x: towerX!,y: towerY)
+//            numLifes += 1
 
         }
         
+        if firstBody.node?.name == "Player" && secondBody.node?.name == "towertop" {
+            NSLog("Player and TOP CONTACT")
+            
+            let towerY = (secondBody.node?.position.y)!
+            let towerX = secondBody.node?.position.x
+            
+            spawnMiniCubes(towX: towerX!, towY: towerY)
+            //hitTower == true
+            //player.position = CGPoint(x: towerX!,y: towerY)
+            numLifes += 1
+            
+        }
         
-        if firstBody.node?.name == "minicube" && secondBody.node?.name == "tower" {
+        
+        if firstBody.node?.name == "minicube" && secondBody.node?.name == "towertop" {
             NSLog("minicube and tower Conatact")
             
             let towerY = (secondBody.node?.position.y)! + 250
@@ -174,7 +188,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Replace the cube
     override func update(_ currentTime: TimeInterval) {
         if let cubePhysicsBody = player.physicsBody {
-            if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity <= 0.1 && hasGone {
+            if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity <= 0.1 && hasGone && !hitTower {
                 
                 numLifes -= 1
                 lifeLabel?.text = String(numLifes)
@@ -195,13 +209,20 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //PRINT AND GO TO MAIN MENU
     func endGame(){
         
+        gameOver_label =  childNode(withName: "GameOver") as? SKLabelNode!
+        gameOver_label?.zPosition = 6
+        finalScore_label =  childNode(withName: "FinalScore_label") as? SKLabelNode!
+        finalScore_label?.zPosition = 6
+        finalScore_score =  childNode(withName: "finalScore_score") as? SKLabelNode!
+        finalScore_score?.text = String(score)
+        finalScore_score?.zPosition = 6
         
         //PRINT GAME OVER
-        if let scene = MainMenu(fileNamed: "MainMenuScene"){
-            
-            scene.scaleMode = .aspectFill
-            view?.presentScene(scene, transition: SKTransition.doorsCloseVertical(withDuration: TimeInterval(2)))
-        }
+//        if let scene = MainMenu(fileNamed: "MainMenuScene"){
+//
+//            scene.scaleMode = .aspectFill
+//            view?.presentScene(scene, transition: SKTransition.doorsCloseVertical(withDuration: TimeInterval(2)))
+//        }
     }
     
     //Spawn Towers that will have the target
@@ -217,6 +238,22 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         tempTower.position.y = -250;
         tempTower.size.height = randNumb(firstNum: CGFloat(700), secNum: CGFloat(250))
             
+        //MOVE TO BUCKET CLASS
+        towerTop = SKShapeNode(rectOf: CGSize(width: 4*tempTower.size.width, height: 3))
+        towerTop.fillColor = .red
+        towerTop.name = "towertop"
+        towerTop.strokeColor = .clear
+        towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y+250)
+        towerTop.zPosition = 10
+        towerTop.alpha = 1
+            
+        towerTop.physicsBody = SKPhysicsBody(rectangleOf: towerTop.frame.size)
+        towerTop.physicsBody? .categoryBitMask = ColliderType.TOWERTOP
+        towerTop.physicsBody? .contactTestBitMask = ColliderType.PLAYER
+        towerTop.physicsBody? .affectedByGravity = false
+        towerTop.physicsBody? .isDynamic = false
+        
+        addChild(towerTop)
         addChild(tempTower)
             
         }
@@ -233,21 +270,24 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Spawn the minicubes on contact
     func spawnMiniCubes(towX: CGFloat, towY: CGFloat){
         
+        //Adjusts Number of Cubes and Angular Velocity Upon Ejection
+        let numberOfCubes = 3
+        let xSpan = 10 //distance the minicubes will travel in the x direction
+        let ySpan = 7.5 //distance the cubes will travel upward
         
-        let numberOfTowers = numTowers * 2 + 1
-        
-        for _ in 1..<numberOfTowers {
+        for _ in 1..<numberOfCubes {
             
             let tempMiniCube:MiniCube = MiniCube()
             tempMiniCube.position.x = towX
             tempMiniCube.position.y = towY
             
             addChild(tempMiniCube)
-            let tempImpulse = CGVector(dx: randNumb(firstNum: -5, secNum: 5), dy: 15)
+            let tempImpulse = CGVector(dx: randNumb(firstNum: CGFloat(-xSpan), secNum: CGFloat(xSpan)), dy: CGFloat(ySpan))
             tempMiniCube.physicsBody?.applyImpulse(tempImpulse)
             
         }
     }
+    
     
     //Helper function returns random number
     func randNumb(firstNum: CGFloat, secNum: CGFloat)->CGFloat{
