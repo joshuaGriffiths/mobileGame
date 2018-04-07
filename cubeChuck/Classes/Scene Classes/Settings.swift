@@ -10,6 +10,7 @@ import SpriteKit
 
 class Settings: SKScene {
     
+    let dificulty = Dificulty.sharedInstance
     //LABELS
     var lifeLabel: SKLabelNode?
     var easyLabel: SKLabelNode?
@@ -22,13 +23,13 @@ class Settings: SKScene {
         easyLabel = childNode(withName: "easyCheck") as? SKLabelNode!
         mediumLabel = childNode(withName: "mediumCheck") as? SKLabelNode!
         hardLabel = childNode(withName: "hardCheck") as? SKLabelNode!
-        lifeLabel?.text = String(numLifes)
+        lifeLabel?.text = String(dificulty.numLifes)
         
-        if numTowers == 1 {
+        if dificulty.numTowers == 1 {
             
             hardLabel?.zPosition = 3
             
-        } else if numTowers == 2 {
+        } else if dificulty.numTowers == 2 {
             
             mediumLabel?.zPosition = 3
             
@@ -59,19 +60,19 @@ class Settings: SKScene {
             //Handle setting manipulation
             if atPoint(location).name == "numLives_increase" {
                 
-                numLifes += 1
-                lifeLabel?.text = String(numLifes)
+                dificulty.numLifes += 1
+                lifeLabel?.text = String(dificulty.numLifes)
             }
             
             if atPoint(location).name == "numLives_decrease" {
                 
-                numLifes -= 1
-                lifeLabel?.text = String(numLifes)
+                dificulty.numLifes -= 1
+                lifeLabel?.text = String(dificulty.numLifes)
             }
             
             if atPoint(location).name == "difEasy" {
                 
-                numTowers = 3
+                dificulty.numTowers = 3
                 easyLabel?.zPosition = 3
                 mediumLabel?.zPosition = 0
                 hardLabel?.zPosition = 0
@@ -80,7 +81,7 @@ class Settings: SKScene {
             
             if atPoint(location).name == "difMedium" {
                 
-                numTowers = 2
+                dificulty.numTowers = 2
                 easyLabel?.zPosition = 0
                 mediumLabel?.zPosition = 3
                 hardLabel?.zPosition = 0
@@ -89,7 +90,7 @@ class Settings: SKScene {
             
             if atPoint(location).name == "difHard" {
                 
-                numTowers = 1
+                dificulty.numTowers = 1
                 easyLabel?.zPosition = 0
                 mediumLabel?.zPosition = 0
                 hardLabel?.zPosition = 3

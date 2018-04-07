@@ -25,15 +25,19 @@ struct tch { //start and end touch points
     static var end = CGPoint()
 }
 
-//GLOBALS FOR SETTING MANIPULATION
-var numTowers = 2
-var numLifes = 3//number of lives the player has (should be moved to player class)
+//Player Needs to be global for now
 let player:Player = Player()
-var towerTop = SKShapeNode()
-var shotCounter = 0
+
 
 class GamePlay: SKScene, SKPhysicsContactDelegate {
     
+    
+    //Gameplay variables
+    
+    var towerTop = SKShapeNode()
+    var towerLeft = SKShapeNode()
+    var towerRight = SKShapeNode()
+    var shotCounter = 0
     
     //LABELS
     var lifeLabel: SKLabelNode?
@@ -42,11 +46,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     var finalScore_label: SKLabelNode?
     var finalScore_score: SKLabelNode?
     
-    //Variables
+    //Random Variables
     var pi = CGFloat(Double.pi)
 
+    //Singeltons
     let score = Score.sharedInstance
     let scoreSingeltonProof = Score.sharedInstance
+    let dificulty = Dificulty.sharedInstance
     
     var hasGone = false  // to detect if cube has left (should be removed)
     var hitTower = false // to detect if a cube has hit a
@@ -64,7 +70,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         //INitialize Labels
         lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
-        lifeLabel?.text = String(numLifes)
+        lifeLabel?.text = String(dificulty.numLifes)
         scoreLabel = childNode(withName: "scoreLabel") as? SKLabelNode!
         scoreLabel?.text = String(scoreSingeltonProof.value)
         
@@ -155,7 +161,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             spawnMiniCubes(towX: towerX!, towY: towerY)
             //hitTower == true
             //player.position = CGPoint(x: towerX!,y: towerY)
-            numLifes += 1
+            dificulty.numLifes += 1
             
         }
         
@@ -167,7 +173,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             let towerX = secondBody.node?.position.x
             
             spawnMiniCubes(towX: towerX!, towY: towerY)
-            
         }
         
         
@@ -186,19 +191,21 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     //Replace the cube
     override func update(_ currentTime: TimeInterval) {
+        
         if let cubePhysicsBody = player.physicsBody {
+            
             if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity <= 0.1 && hasGone && !hitTower {
                 
-                numLifes -= 1
+                dificulty.numLifes -= 1
                 shotCounter += 1
-                lifeLabel?.text = String(numLifes)
-                if numLifes == 0 {
+                lifeLabel?.text = String(dificulty.numLifes)
+                
+                if dificulty.numLifes == 0 {
                     
                     endGame()
                 }
                 
-                //FOR DIFICULTY
-                
+                //FOR DIFICULTY decrease number of towers
                 if shotCounter % 2 == 0 {
                     self.removeChildren(in: [self.childNode(withName: "tower")!])
                     self.childNode(withName: "tower")
@@ -216,6 +223,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //PRINT AND GO TO MAIN MENU
     func endGame(){
         
+        //PRINT GAME OVER
         gameOver_label =  childNode(withName: "GameOver") as? SKLabelNode!
         gameOver_label?.zPosition = 6
         finalScore_label =  childNode(withName: "FinalScore_label") as? SKLabelNode!
@@ -224,19 +232,23 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         finalScore_score?.text = String(score.value)
         finalScore_score?.zPosition = 6
         
-        //PRINT GAME OVER
-//        if let scene = MainMenu(fileNamed: "MainMenuScene"){
-//
-//            scene.scaleMode = .aspectFill
-//            view?.presentScene(scene, transition: SKTransition.doorsCloseVertical(withDuration: TimeInterval(2)))
-//        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+            
+            if let scene = MainMenu(fileNamed: "MainMenuScene"){
+                
+                scene.scaleMode = .aspectFill
+                self.view?.presentScene(scene, transition: SKTransition.doorsCloseVertical(withDuration: TimeInterval(1)))
+            }
+        })
+        //Go to Main Menu Scene
+        
     }
     
     //Spawn Towers that will have the target
     func spawnTowers(){
         
 
-        let numberOfTowers = numTowers * 2 + 1
+        let numberOfTowers = dificulty.numTowers
         
         for _ in 1..<numberOfTowers {
             
@@ -250,7 +262,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         towerTop.fillColor = .red
         towerTop.name = "towertop"
         towerTop.strokeColor = .clear
-        towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y+250)
+        towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y + tempTower.size.height/2)
         towerTop.zPosition = 10
         towerTop.alpha = 1
             
@@ -259,7 +271,43 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         towerTop.physicsBody? .contactTestBitMask = ColliderType.PLAYER
         towerTop.physicsBody? .affectedByGravity = false
         towerTop.physicsBody? .isDynamic = false
-        
+            
+        towerLeft = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
+        towerLeft.fillColor = .red
+        towerLeft.strokeColor = .clear
+        towerLeft.position = CGPoint(x: towerTop.position.x - towerTop.frame.size.width/2, y: towerTop.position.y + towerLeft.frame.size.height/2)
+        towerLeft.zPosition = 10
+        towerLeft.alpha = 1 //do we want to see grids or not
+            
+        towerLeft.physicsBody = SKPhysicsBody(rectangleOf: towerLeft.frame.size)
+        towerLeft.physicsBody? .categoryBitMask = ColliderType.TOWER
+        towerLeft.physicsBody? .collisionBitMask = ColliderType.PLAYER
+        towerLeft.physicsBody? .affectedByGravity = false
+        towerLeft.physicsBody? .isDynamic = false
+        towerLeft.zRotation = pi / 24
+            
+        towerRight.physicsBody = SKPhysicsBody(rectangleOf: towerTop.frame.size)
+        towerRight.physicsBody? .categoryBitMask = ColliderType.TOWERTOP
+        towerRight.physicsBody? .contactTestBitMask = ColliderType.PLAYER
+        towerRight.physicsBody? .affectedByGravity = false
+        towerRight.physicsBody? .isDynamic = false
+            
+        towerRight = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
+        towerRight.fillColor = .red
+        towerRight.strokeColor = .clear
+        towerRight.position = CGPoint(x: towerTop.position.x + towerTop.frame.size.width/2, y: towerTop.position.y + towerRight.frame.size.height/2)
+        towerRight.zPosition = 10
+        towerRight.alpha = 1 //do we want to see grids or not
+            
+        towerRight.physicsBody = SKPhysicsBody(rectangleOf: towerRight.frame.size)
+        towerRight.physicsBody? .categoryBitMask = ColliderType.TOWER
+        towerRight.physicsBody? .collisionBitMask = ColliderType.PLAYER
+        towerRight.physicsBody? .affectedByGravity = false
+        towerRight.physicsBody? .isDynamic = false
+        towerRight.zRotation = -pi / 24
+            
+        addChild(towerLeft)
+        addChild(towerRight)
         addChild(towerTop)
         addChild(tempTower)
             
@@ -284,11 +332,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         for _ in 1..<numberOfCubes {
             
+            //Spawn minicubes at hit tower
             let tempMiniCube:MiniCube = MiniCube()
             tempMiniCube.position.x = towX
             tempMiniCube.position.y = towY
             
             addChild(tempMiniCube)
+            //Apply Shooting to Minicubes
             let tempImpulse = CGVector(dx: randNumb(firstNum: CGFloat(-xSpan), secNum: CGFloat(xSpan)), dy: CGFloat(ySpan))
             tempMiniCube.physicsBody?.applyImpulse(tempImpulse)
             
