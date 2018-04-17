@@ -15,6 +15,6 @@ final class Dificulty {
     static let sharedInstance = Dificulty()
     private init() { }
     
-    var numLifes = 3
+    var numLifes = 11
     var numTowers = 4
 }

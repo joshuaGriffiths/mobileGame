@@ -21,6 +21,7 @@ class Player: SKSpriteNode {
         self.position = CGPoint(x: -620, y: -240)
         self.physicsBody = SKPhysicsBody(rectangleOf:self.size)
         self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.restitution = 0.05 //bounciness 
         self.zPosition = 5
         self.physicsBody?.categoryBitMask = ColliderType.PLAYER
         self.physicsBody?.contactTestBitMask = ColliderType.TOWER

@@ -28,6 +28,8 @@ struct tch { //start and end touch points
 //Player Needs to be global for now
 let player:Player = Player()
 
+let leftScreen = CGFloat(-620)
+
 
 class GamePlay: SKScene, SKPhysicsContactDelegate {
     
@@ -48,7 +50,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     //Random Variables
     var pi = CGFloat(Double.pi)
-
+    
     //Singeltons
     let score = Score.sharedInstance
     let scoreSingeltonProof = Score.sharedInstance
@@ -91,12 +93,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             //IF WE TOUCH THE CUBE
             if GameState.current == .playing {
-
+                
                 if player.contains(location){
-
+                    
                     tch.start = location
+                    hitTower = false
                 }
-            
+                
                 //BACK BUTTON
                 if atPoint(location).name == "back" {
                     
@@ -117,10 +120,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             let location = touch.location(in: self)
             
             if GameState.current == .playing && !player.contains(location) {
-
+                
                 tch.end = location
                 player.fire()
                 hasGone = true
+                
             }
         }
     }
@@ -128,10 +132,10 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     //DETECTING COLLISION
     func didBegin(_ contact: SKPhysicsContact) {
-
+        
         var firstBody = SKPhysicsBody();
         var secondBody = SKPhysicsBody();
-
+        
         //This is to detect what hits what
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             firstBody = contact.bodyA
@@ -143,13 +147,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         if firstBody.node?.name == "Player" && secondBody.node?.name == "ground" {
             NSLog("Player and ground Conatact")
+            
+        }
         
-         }
-
         if firstBody.node?.name == "Player" && secondBody.node?.name == "tower" {
-             NSLog("Player and tower Conatact")
-
-
+            NSLog("Player and tower Conatact")
+            
+            
         }
         
         if firstBody.node?.name == "Player" && secondBody.node?.name == "towertop" {
@@ -158,10 +162,23 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             let towerY = (secondBody.node?.position.y)!
             let towerX = secondBody.node?.position.x
             
+            self.removeChildren(in: [self.childNode(withName: "Player")!])
+            
             spawnMiniCubes(towX: towerX!, towY: towerY)
-            //hitTower == true
-            //player.position = CGPoint(x: towerX!,y: towerY)
+            
+            //            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
+            //
+            //                self.nextLevel(hitY: towerY)
+            //            })
+            
+            
+            
+            //spawnPlayer()
+            //player.physicsBody?.affectedByGravity = false
+            //player.position.y = player.position.y + CGFloat(10)
+            
             dificulty.numLifes += 1
+            hitTower = true
             
         }
         
@@ -194,7 +211,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         if let cubePhysicsBody = player.physicsBody {
             
-            if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity <= 0.1 && hasGone && !hitTower {
+            //If we have missed
+            if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity == 0.0 && hasGone && !hitTower {
                 
                 dificulty.numLifes -= 1
                 shotCounter += 1
@@ -206,17 +224,41 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 }
                 
                 //FOR DIFICULTY decrease number of towers
-                if shotCounter % 2 == 0 {
-                    self.removeChildren(in: [self.childNode(withName: "tower")!])
-                    self.childNode(withName: "tower")
-                }
+                //                if shotCounter % 2 == 0 {
+                //                    self.removeChildren(in: [self.childNode(withName: "tower")!])
+                //                }
                 
                 player.position = originalCubePos
                 hasGone = false
-
+                
+            }
+            
+            //If we have landed in a tower
+            if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity == 0.0 && hasGone && hitTower {
+                
+                
+                shotCounter += 1
+                //hasGone = false
+                
+                let leftTower = childNode(withName: "tower3")
+                var leftTowerStopper = leftTower?.position.x
+                
+                let numberOfTowers = dificulty.numTowers
+                
+                if leftTowerStopper! > leftScreen {
+                    
+                    for i in 1..<numberOfTowers {
+                        
+                        let moveTower = childNode(withName: "tower\(i)")
+                        moveTower?.position.x = (moveTower?.position.x)! - CGFloat(1)
+                        
+                    }
+                    
+                    leftTowerStopper = leftTowerStopper! - CGFloat(1)
                 }
             }
         }
+    }
     
     
     
@@ -247,69 +289,67 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Spawn Towers that will have the target
     func spawnTowers(){
         
-
+        
         let numberOfTowers = dificulty.numTowers
         
-        for _ in 1..<numberOfTowers {
+        for i in 1..<numberOfTowers {
             
-        let tempTower:Tower = Tower()
-        tempTower.position.x = randNumb(firstNum: CGFloat(640), secNum: CGFloat(-240))
-        tempTower.position.y = -250;
-        tempTower.size.height = randNumb(firstNum: CGFloat(700), secNum: CGFloat(250))
+            let tempTower:Tower = Tower()
+            tempTower.name = "tower\(i)"
+            tempTower.position.x = randNumb(firstNum: CGFloat(640), secNum: CGFloat(-240))
+            tempTower.position.y = -250;
+            tempTower.size.height = randNumb(firstNum: CGFloat(700), secNum: CGFloat(250))
             
-        //MOVE TO BUCKET CLASS
-        towerTop = SKShapeNode(rectOf: CGSize(width: 4*tempTower.size.width, height: 3))
-        towerTop.fillColor = .red
-        towerTop.name = "towertop"
-        towerTop.strokeColor = .clear
-        towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y + tempTower.size.height/2)
-        towerTop.zPosition = 10
-        towerTop.alpha = 1
+            //MOVE TO BUCKET CLASS
+            towerTop = SKShapeNode(rectOf: CGSize(width: 4*tempTower.size.width, height: 3))
+            towerTop.fillColor = .red
+            towerTop.name = "towertop"
+            towerTop.strokeColor = .clear
+            towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y + tempTower.size.height/2)
+            towerTop.zPosition = 10
+            towerTop.alpha = 1
             
-        towerTop.physicsBody = SKPhysicsBody(rectangleOf: towerTop.frame.size)
-        towerTop.physicsBody? .categoryBitMask = ColliderType.TOWERTOP
-        towerTop.physicsBody? .contactTestBitMask = ColliderType.PLAYER
-        towerTop.physicsBody? .affectedByGravity = false
-        towerTop.physicsBody? .isDynamic = false
+            towerTop.physicsBody = SKPhysicsBody(rectangleOf: towerTop.frame.size)
+            towerTop.physicsBody? .categoryBitMask = ColliderType.TOWERTOP
+            towerTop.physicsBody? .contactTestBitMask = ColliderType.PLAYER
+            towerTop.physicsBody? .affectedByGravity = false
+            towerTop.physicsBody? .isDynamic = false
             
-        towerLeft = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
-        towerLeft.fillColor = .red
-        towerLeft.strokeColor = .clear
-        towerLeft.position = CGPoint(x: towerTop.position.x - towerTop.frame.size.width/2, y: towerTop.position.y + towerLeft.frame.size.height/2)
-        towerLeft.zPosition = 10
-        towerLeft.alpha = 1 //do we want to see grids or not
+            towerLeft = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
+            towerLeft.fillColor = .red
+            towerLeft.name = "towerleft"
+            towerLeft.strokeColor = .clear
+            towerLeft.position = CGPoint(x: towerTop.position.x - towerTop.frame.size.width/2, y: towerTop.position.y + towerLeft.frame.size.height/2)
+            towerLeft.zPosition = 10
+            towerLeft.alpha = 1 //do we want to see grids or not
             
-        towerLeft.physicsBody = SKPhysicsBody(rectangleOf: towerLeft.frame.size)
-        towerLeft.physicsBody? .categoryBitMask = ColliderType.TOWER
-        towerLeft.physicsBody? .collisionBitMask = ColliderType.PLAYER
-        towerLeft.physicsBody? .affectedByGravity = false
-        towerLeft.physicsBody? .isDynamic = false
-        towerLeft.zRotation = pi / 24
+            towerLeft.physicsBody = SKPhysicsBody(rectangleOf: towerLeft.frame.size)
+            towerLeft.physicsBody? .categoryBitMask = ColliderType.TOWER
+            towerLeft.physicsBody? .collisionBitMask = ColliderType.PLAYER
+            towerLeft.physicsBody? .affectedByGravity = false
+            towerLeft.physicsBody? .isDynamic = false
+            towerLeft.zRotation = pi / 70
             
-        towerRight.physicsBody = SKPhysicsBody(rectangleOf: towerTop.frame.size)
-        towerRight.physicsBody? .categoryBitMask = ColliderType.TOWERTOP
-        towerRight.physicsBody? .contactTestBitMask = ColliderType.PLAYER
-        towerRight.physicsBody? .affectedByGravity = false
-        towerRight.physicsBody? .isDynamic = false
+            towerRight.physicsBody = SKPhysicsBody(rectangleOf: towerRight.frame.size)
+            towerRight.physicsBody? .categoryBitMask = ColliderType.TOWER
+            towerRight.physicsBody? .contactTestBitMask = ColliderType.PLAYER
+            towerRight.physicsBody? .affectedByGravity = false
+            towerRight.physicsBody? .isDynamic = false
+            towerRight.zRotation = -pi / 70
             
-        towerRight = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
-        towerRight.fillColor = .red
-        towerRight.strokeColor = .clear
-        towerRight.position = CGPoint(x: towerTop.position.x + towerTop.frame.size.width/2, y: towerTop.position.y + towerRight.frame.size.height/2)
-        towerRight.zPosition = 10
-        towerRight.alpha = 1 //do we want to see grids or not
+            towerRight = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
+            towerRight.fillColor = .red
+            towerRight.name = "towerright"
+            towerRight.strokeColor = .clear
+            towerRight.position = CGPoint(x: towerTop.position.x + towerTop.frame.size.width/2, y: towerTop.position.y + towerRight.frame.size.height/2)
+            towerRight.zPosition = 10
+            towerRight.alpha = 1 //do we want to see grids or not
             
-        towerRight.physicsBody = SKPhysicsBody(rectangleOf: towerRight.frame.size)
-        towerRight.physicsBody? .categoryBitMask = ColliderType.TOWER
-        towerRight.physicsBody? .collisionBitMask = ColliderType.PLAYER
-        towerRight.physicsBody? .affectedByGravity = false
-        towerRight.physicsBody? .isDynamic = false
-        towerRight.zRotation = -pi / 24
             
-        addChild(towerLeft)
-        addChild(towerRight)
-        addChild(towerTop)
-        addChild(tempTower)
+            addChild(towerLeft)
+            addChild(towerRight)
+            addChild(towerTop)
+            addChild(tempTower)
             
         }
     }
@@ -352,8 +392,30 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         return CGFloat(arc4random()) / CGFloat(UINT32_MAX) * abs(firstNum - secNum) + min(firstNum,secNum)
     }
     
+    
+    func nextLevel(hitY: CGFloat){
+        
+        let numberOfTowers = dificulty.numTowers
+        
+        for _ in 1..<numberOfTowers {
+            
+            self.removeChildren(in: [self.childNode(withName: "tower")!])
+            self.removeChildren(in: [self.childNode(withName: "towertop")!])
+            self.removeChildren(in: [self.childNode(withName: "towerleft")!])
+            self.removeChildren(in: [self.childNode(withName: "towerright")!])
+            
+        }
+        
+        let firstTower:Tower = Tower()
+        firstTower.position.x = CGFloat(-620)
+        firstTower.position.y = CGFloat(-250)
+        firstTower.size.height = CGFloat(500)//how do i match this with the original hit tower size??
+        addChild(firstTower)
+        
+    }
+    
 }
-    
-    
-    
+
+
+
 
