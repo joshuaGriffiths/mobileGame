@@ -9,4 +9,4 @@ Acomplished: Barebones gameplay acomplished, have the ability to shoot a cube, h
 
 Changes: Have a scrolling scene so the player isnt reset at the same position every time, have dificulty ie decreased targets as the game goes on, custom graphics, Implement singelton. 
 
-Screenshots: In repository
+Screenshots: Shown in repository
