@@ -180,6 +180,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                     player.physicsBody?.affectedByGravity = false
                     player.position.x = leftScreen
                     player.position.y = player.position.y + CGFloat(10)
+                    
+                    self.spawnTowers()
                    
                 })
 
@@ -193,7 +195,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             if firstBody.node?.name == "minicube" && secondBody.node?.name == "towertop\(i)" {
                 NSLog("minicube and tower Conatact")
                 
-                let towerY = (secondBody.node?.position.y)! + 250
+                let towerY = (secondBody.node?.position.y)! + 20
                 let towerX = secondBody.node?.position.x
                 
                 spawnMiniCubes(towX: towerX!, towY: towerY)
@@ -397,7 +399,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         //Adjusts Number of Cubes and Angular Velocity Upon Ejection
         let numberOfCubes = 3
         let xSpan = 10 //distance the minicubes will travel in the x direction
-        let ySpan = 7.5 //distance the cubes will travel upward
+        let ySpan = 12 //distance the cubes will travel upward
         
         for _ in 1..<numberOfCubes {
             
