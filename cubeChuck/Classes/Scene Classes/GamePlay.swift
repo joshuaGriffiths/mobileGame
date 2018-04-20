@@ -70,6 +70,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         //SEE LINE 173 for Singelton Proof
         scoreSingeltonProof.value = 0
+        dificulty.numLifes = 11
         
         //INitialize Labels
         lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
@@ -172,7 +173,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 
                 self.removeChildren(in: [self.childNode(withName: "Player")!])
                 
-                spawnMiniCubes(towX: towerX!, towY: towerY)
+                //spawnMiniCubes(towX: towerX!, towY: towerY)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
                     
@@ -198,7 +199,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 let towerY = (secondBody.node?.position.y)! + 20
                 let towerX = secondBody.node?.position.x
                 
-                spawnMiniCubes(towX: towerX!, towY: towerY)
+                //spawnMiniCubes(towX: towerX!, towY: towerY)
             }
             
             
@@ -295,6 +296,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     //PRINT AND GO TO MAIN MENU
     func endGame(){
+        
+        self.removeChildren(in: [self.childNode(withName: "Player")!])
         
         //PRINT GAME OVER
         gameOver_label =  childNode(withName: "GameOver") as? SKLabelNode!
