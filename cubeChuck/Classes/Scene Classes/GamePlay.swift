@@ -60,6 +60,12 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     var hasGone = false  // to detect if cube has left (should be removed)
     var hitTower = false // to detect if a cube has hit a
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
+    var numberOfTowers = 0
+    var levelNumber = 0
+    
+    
+    
+    
     
     
     //SET UP SCENE
@@ -68,20 +74,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         //Create contact world
         self.physicsWorld.contactDelegate = self
         
-        //SEE LINE 173 for Singelton Proof
-        scoreSingeltonProof.value = 0
-        dificulty.numLifes = 11
-        
-        //INitialize Labels
-        lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
-        lifeLabel?.text = String(dificulty.numLifes)
-        scoreLabel = childNode(withName: "scoreLabel") as? SKLabelNode!
-        scoreLabel?.text = String(scoreSingeltonProof.value)
-        
-        //Spawn towers and players
-        spawnTowers()
-        spawnPlayer()
+       setupGame()
     }
+    
+    
+    
+    
+    
     
     
     
@@ -100,6 +99,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                     
                     tch.start = location
                     hitTower = false
+                    hasGone = false
                 }
                 
                 //BACK BUTTON
@@ -110,6 +110,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
+    
     
     
     
@@ -130,6 +132,12 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
+    
+    
+    
+    
+    
     
     
     //DETECTING COLLISION
@@ -159,8 +167,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
         }
         
-        
-        
         for i in 1..<numberOfTowers {
             
             if firstBody.node?.name == "Player" && secondBody.node?.name == "towertop\(i)" {
@@ -171,23 +177,27 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 
                 hitStopper = towerX!
                 
-                self.removeChildren(in: [self.childNode(withName: "Player")!])
+                let touchedTowerTop = childNode(withName: "towertop\(i)")
+                childNode(withName: "towerright\(i)")?.position.y = CGFloat(1000)
+                //touchedTowerRight?.position.y = CGFloat(1000)//fix this lol
+                let touchedTowerLeft = childNode(withName: "towerleft\(i)")
+                touchedTowerLeft?.position.y = CGFloat(1000)
+                
+                originalCubePos = player.position
+                player.physicsBody?.isDynamic = false
                 
                 //spawnMiniCubes(towX: towerX!, towY: towerY)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(6), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(8), execute: {
                     
-                    self.spawnPlayer()
+                    touchedTowerTop?.name = "touchedTower"
                     player.physicsBody?.affectedByGravity = false
-                    player.position.x = leftScreen
-                    player.position.y = player.position.y + CGFloat(10)
+                    player.physicsBody?.isDynamic = true
                     
                     self.spawnTowers()
                    
                 })
 
-                
-                
                 dificulty.numLifes += 1
                 hitTower = true
                 
@@ -205,8 +215,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
         }
         
-        
-        
         if firstBody.node?.name == "minicube" && secondBody.node?.name == "ground" {
             NSLog("minicube and ground Conatact")
             score.value += 1
@@ -214,6 +222,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
         }
     }
+    
+    
     
     
     
@@ -247,6 +257,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
 //                    towerNumber = towerNumber + 1
 //                }
                 
+                player.physicsBody?.affectedByGravity = false
                 player.position = originalCubePos
                 hasGone = false
                 
@@ -255,42 +266,25 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             //If we have landed in a tower
             if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity == 0.0 && hasGone && hitTower {
                 
-                
                 shotCounter += 1
                 //hasGone = false
                 
-                //let leftTower = childNode(withName: "tower3")
-                //var leftTowerStopper = leftTower?.position.x
-                
-                let numberOfTowers = dificulty.numTowers
-               
-                
                 if hitStopper > leftScreen {
-                    
-                    
-                    //DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                         
-                        for i in 1..<numberOfTowers {
-                            
-                            let moveTower = self.childNode(withName: "tower\(i)")
-                            let moveTop = self.childNode(withName: "towertop\(i)")
-                            let moveTopLeft = self.childNode(withName: "towerleft\(i)")
-                            let moveTopRight = self.childNode(withName: "towerright\(i)")
-                            moveTower?.position.x = (moveTower?.position.x)! - CGFloat(8)
-                            moveTop?.position.x = (moveTop?.position.x)! - CGFloat(8)
-                            moveTopRight?.position.x = (moveTopRight?.position.x)! - CGFloat(8)
-                            moveTopLeft?.position.x = (moveTopLeft?.position.x)! - CGFloat(8)
-                            
-                        }
-                        
-                        hitStopper = hitStopper - CGFloat(8)
-                        
-                    //})
-                    
+                    nextLevel()
                 }
+                
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -320,16 +314,82 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    //Spawn Towers that will have the target
-    func spawnTowers(){
+    
+    
+    
+    
+    
+    
+    
+    
+    func setupGame(){
         
+        //SEE LINE 173 for Singelton Proof
+        scoreSingeltonProof.value = 0
+        dificulty.numLifes = 11
         
-        let numberOfTowers = dificulty.numTowers
+        //INitialize Labels
+        lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
+        lifeLabel?.text = String(dificulty.numLifes)
+        scoreLabel = childNode(withName: "scoreLabel") as? SKLabelNode!
+        scoreLabel?.text = String(scoreSingeltonProof.value)
+        
+        //Spawn towers and players
+        spawnTowers()
+        spawnPlayer()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func nextLevel(){
+        
+        //let numberOfTowers = dificulty.numTowers
         
         for i in 1..<numberOfTowers {
             
+            let moveTower = self.childNode(withName: "tower\(i)")
+            let moveTop = self.childNode(withName: "towertop\(i)")
+            let moveTopLeft = self.childNode(withName: "towerleft\(i)")
+            let moveTopRight = self.childNode(withName: "towerright\(i)")
+            moveTower?.position.x = (moveTower?.position.x)! - CGFloat(8)
+            moveTop?.position.x = (moveTop?.position.x)! - CGFloat(8)
+            moveTopRight?.position.x = (moveTopRight?.position.x)! - CGFloat(8)
+            moveTopLeft?.position.x = (moveTopLeft?.position.x)! - CGFloat(8)
+            
+        }
+        
+        player.position.x = player.position.x - CGFloat(8)
+        hitStopper = hitStopper - CGFloat(8)
+        originalCubePos = player.position
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //Spawn Towers that will have the target
+    func spawnTowers(){
+        
+        for i in 1..<dificulty.numTowers {
+            
             let tempTower:Tower = Tower()
-            tempTower.name = "tower\(i)"
+            tempTower.name = "tower\(i+levelNumber)"
             tempTower.position.x = randNumb(firstNum: CGFloat(640), secNum: CGFloat(-240))
             tempTower.position.y = -250;
             tempTower.size.height = randNumb(firstNum: CGFloat(700), secNum: CGFloat(250))
@@ -337,7 +397,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             //MOVE TO BUCKET CLASS
             towerTop = SKShapeNode(rectOf: CGSize(width: 4*tempTower.size.width, height: 3))
             towerTop.fillColor = .red
-            towerTop.name = "towertop\(i)"
+            towerTop.name = "towertop\(i+levelNumber)"
             towerTop.strokeColor = .clear
             towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y + tempTower.size.height/2)
             towerTop.zPosition = 10
@@ -351,7 +411,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             towerLeft = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
             towerLeft.fillColor = .red
-            towerLeft.name = "towerleft\(i)"
+            towerLeft.name = "towerleft\(i+levelNumber)"
             towerLeft.strokeColor = .clear
             towerLeft.position = CGPoint(x: towerTop.position.x - towerTop.frame.size.width/2, y: towerTop.position.y + towerLeft.frame.size.height/2)
             towerLeft.zPosition = 10
@@ -373,7 +433,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             towerRight = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
             towerRight.fillColor = .red
-            towerRight.name = "towerright\(i)"
+            towerRight.name = "towerright\(i+levelNumber)"
             towerRight.strokeColor = .clear
             towerRight.position = CGPoint(x: towerTop.position.x + towerTop.frame.size.width/2, y: towerTop.position.y + towerRight.frame.size.height/2)
             towerRight.zPosition = 10
@@ -386,7 +446,21 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             addChild(tempTower)
             
         }
+        
+        numberOfTowers = numberOfTowers + dificulty.numTowers
+        levelNumber = levelNumber + (dificulty.numTowers - 1)
+        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     //Spawn the player
@@ -394,6 +468,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         originalCubePos = player.position
         addChild(player)
     }
+    
+    
+    
+    
+    
+    
+    
     
     
     //Spawn the minicubes on contact
@@ -420,11 +501,23 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    
+    
+    
+    
+    
+    
+    
     //Helper function returns random number
     func randNumb(firstNum: CGFloat, secNum: CGFloat)->CGFloat{
         
         return CGFloat(arc4random()) / CGFloat(UINT32_MAX) * abs(firstNum - secNum) + min(firstNum,secNum)
     }
+    
+    
+    
+    
+    
     
     
     
