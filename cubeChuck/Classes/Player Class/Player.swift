@@ -17,7 +17,7 @@ class Player: SKSpriteNode {
         let texture = SKTexture(imageNamed: "cube")
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
         self.name = "Player"
-        self.setScale(CGFloat(0.5))
+        self.setScale(CGFloat(0.375))
         self.position = CGPoint(x: -620, y: -240)
         self.physicsBody = SKPhysicsBody(rectangleOf:self.size)
         self.physicsBody?.affectedByGravity = false
@@ -37,8 +37,10 @@ class Player: SKSpriteNode {
     //Fire the player
     func fire(){
         
+        let throwMultiplier = CGFloat(10)
+        
         let xChange = tch.end.x - tch.start.x
-        let yChange = (tch.end.y -  tch.start.y)/5
+        let yChange = (tch.end.y -  tch.start.y)/throwMultiplier
         
         let angle = (atan(xChange / (tch.end.y - tch.start.y)) * 180 / pi)
         //Because we limit the yvalue of our toss we need to account for that in our x

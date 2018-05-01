@@ -157,40 +157,38 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         }
         
         if firstBody.node?.name == "Player" && secondBody.node?.name == "ground" {
-            NSLog("Player and ground Conatact")
+            //NSLog("Player and ground Conatact")
             
         }
         
         if firstBody.node?.name == "Player" && secondBody.node?.name == "tower" {
-            NSLog("Player and tower Conatact")
+            //NSLog("Player and tower Conatact")
             
             
         }
         
-        for i in 1..<numberOfTowers {
+        for i in 1..<dificulty.numTowers + levelNumber {
             
             if firstBody.node?.name == "Player" && secondBody.node?.name == "towertop\(i)" {
-                NSLog("Player and TOP CONTACT")
+                //NSLog("Player and TOP CONTACT")
                 
                 let towerY = (secondBody.node?.position.y)!
                 let towerX = secondBody.node?.position.x
                 
                 hitStopper = towerX!
                 
-                let touchedTowerTop = childNode(withName: "towertop\(i)")
-                childNode(withName: "towerright\(i)")?.position.y = CGFloat(1000)
-                //touchedTowerRight?.position.y = CGFloat(1000)//fix this lol
-                let touchedTowerLeft = childNode(withName: "towerleft\(i)")
-                touchedTowerLeft?.position.y = CGFloat(1000)
+                removeChildren(in: [self.childNode(withName: "towertop\(i)")!])
+                removeChildren(in: [self.childNode(withName: "towerright\(i)")!])
+                removeChildren(in: [self.childNode(withName: "towerleft\(i)")!])
                 
                 originalCubePos = player.position
                 player.physicsBody?.isDynamic = false
                 
-                //spawnMiniCubes(towX: towerX!, towY: towerY)
+                spawnMiniCubes(towX: towerX!, towY: towerY)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(8), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
                     
-                    touchedTowerTop?.name = "touchedTower"
+                    //touchedTowerTop?.name = "touchedTower"
                     player.physicsBody?.affectedByGravity = false
                     player.physicsBody?.isDynamic = true
                     
@@ -204,21 +202,23 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             }
             
             if firstBody.node?.name == "minicube" && secondBody.node?.name == "towertop\(i)" {
-                NSLog("minicube and tower Conatact")
+                //NSLog("minicube and tower Conatact")
                 
                 let towerY = (secondBody.node?.position.y)! + 20
                 let towerX = secondBody.node?.position.x
                 
-                //spawnMiniCubes(towX: towerX!, towY: towerY)
+                spawnMiniCubes(towX: towerX!, towY: towerY)
             }
             
             
         }
         
         if firstBody.node?.name == "minicube" && secondBody.node?.name == "ground" {
-            NSLog("minicube and ground Conatact")
+            //NSLog("minicube and ground Conatact")
             score.value += 1
             scoreLabel?.text = String(score.value)
+            removeChildren(in: [self.childNode(withName: "minicube")!])
+            
             
         }
     }
@@ -485,7 +485,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         let xSpan = 10 //distance the minicubes will travel in the x direction
         let ySpan = 12 //distance the cubes will travel upward
         
-        for _ in 1..<numberOfCubes {
+        for _ in 1..<numberOfCubes+1 {
             
             //Spawn minicubes at hit tower
             let tempMiniCube:MiniCube = MiniCube()
