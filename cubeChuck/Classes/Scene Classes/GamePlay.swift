@@ -73,9 +73,10 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     var hasGone = false  // to detect if cube has left
     var hitTower = false // to detect if a cube has hit a
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
-    var numberOfTowers = 0
-    var levelNumber = 0
-    var spawnOutside = 1
+    var numberOfTowers = 0 //number of towers there are
+    var levelNumber = 0 //to indicate the level we are on
+    var spawnOutside = 1 //to indicate if this was the first toss or not
+    var noMiniCubes = true
     
     
     
@@ -204,8 +205,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     
-                    player.physicsBody?.affectedByGravity = false
-                    player.physicsBody?.isDynamic = true
+                    //player.physicsBody?.affectedByGravity = false
+                    //player.physicsBody?.isDynamic = true
                     
                 })
 
@@ -216,6 +217,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             if firstBody.node?.name == "minicube" && secondBody.node?.name == "towertop\(i)" {
                 //NSLog("minicube and tower Conatact")
+                noMiniCubes = false
                 
                 removeChildren(in: [self.childNode(withName: "minicube")!])
                 let towerY = (secondBody.node?.position.y)! + 20
@@ -232,7 +234,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             score.value += 1
             scoreLabel?.text = String(score.value)
             removeChildren(in: [self.childNode(withName: "minicube")!])
-            
             
         }
     }
@@ -279,8 +280,20 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                     nextLevel()
                 }
                 
+                else if (noMiniCubes){
+                    
+                    player.physicsBody?.affectedByGravity = false
+                    player.physicsBody?.isDynamic = true
+                    
+                }
+                
             }
+            
         }
+        
+            
+        
+        
     }
     
     
@@ -373,6 +386,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         }
         
         player.position.x = player.position.x - CGFloat(20)
+        player.physicsBody?.isDynamic = false
         hitStopper = hitStopper - CGFloat(20)
         originalCubePos = player.position
     }
@@ -512,6 +526,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             tempMiniCube.physicsBody?.applyImpulse(tempImpulse)
             
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
+            
+            self.noMiniCubes = true
+            
+        })
+        
     }
     
     
