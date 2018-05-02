@@ -11,6 +11,7 @@ import SpriteKit
 class Settings: SKScene {
     
     let dificulty = Dificulty.sharedInstance
+    
     //LABELS
     var lifeLabel: SKLabelNode?
     var easyLabel: SKLabelNode?

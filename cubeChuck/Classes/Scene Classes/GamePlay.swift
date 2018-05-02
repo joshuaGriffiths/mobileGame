@@ -118,10 +118,19 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 }
                 
                 //BACK BUTTON
-                if atPoint(location).name == "back" {
+                else if atPoint(location).name == "back" {
                     
                     endGame()
                 }
+                
+                //In case a glitch in the game where you loose the cube off the screen
+                else if atPoint(location).name == "cubeReset" {
+                    
+                    player.physicsBody?.isDynamic = false
+                    cubeReset()
+                    //self.removeChildren(in: [childNode(withName: "minicube")!])//remove all minicubes from map
+                }
+                
             }
         }
     }
@@ -365,6 +374,21 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         spawnTowers()
         spawnPlayer()
     }
+    
+    
+    
+    
+    
+    //In case of a glitch in the game reset the cube back to its original position
+    func cubeReset(){
+        
+        
+        player.physicsBody?.affectedByGravity = false
+        player.physicsBody?.isDynamic = true
+        player.position = originalCubePos
+    }
+    
+    
     
     
     
