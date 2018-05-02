@@ -10,15 +10,17 @@ import SpriteKit
 import GameplayKit
 
 //***GameMode***//
+//Indicates if we are currently playing the game
 enum GameState {
-    
+
     case playing
     case menu
     case setting
     static var current = GameState.playing
 }
 
-
+//***ColliderType***//
+//Used to detect what object hit what
 struct ColliderType {
     
     static let PLAYER: UInt32 = 0;
@@ -28,7 +30,8 @@ struct ColliderType {
 }
 
 //***Touch***//
-struct tch { //used to mark start and end of users touch on screen
+//used to mark start and end of users touch on screen
+struct tch {
     
     static var start = CGPoint()//has x and y cordinates
     static var end = CGPoint()
@@ -37,6 +40,7 @@ struct tch { //used to mark start and end of users touch on screen
 //Player Needs to be global for now
 let player:Player = Player()
 
+//Global limit variables need to be hard coded due to screen size
 let leftScreen = CGFloat(-620)
 var hitStopper = CGFloat()
 
@@ -66,7 +70,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     let scoreSingeltonProof = Score.sharedInstance
     let dificulty = Dificulty.sharedInstance
     
-    var hasGone = false  // to detect if cube has left (should be removed)
+    var hasGone = false  // to detect if cube has left
     var hitTower = false // to detect if a cube has hit a
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
     var numberOfTowers = 0
@@ -256,15 +260,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                     endGame()
                 }
                 
-                //FOR DIFICULTY decrease number of towers
-//                var towerNumber = 1
-//                if shotCounter % 2 == 0 {
-//                    self.removeChildren(in: [self.childNode(withName: "tower\(towerNumber)")!])
-//                    self.removeChildren(in: [self.childNode(withName: "towertop\(towerNumber)")!])
-//                    self.removeChildren(in: [self.childNode(withName: "towerleft\(towerNumber)")!])
-//                    self.removeChildren(in: [self.childNode(withName: "towerright\(towerNumber)")!])
-//                    towerNumber = towerNumber + 1
-//                }
                 
                 player.physicsBody?.affectedByGravity = false
                 player.position = originalCubePos
@@ -335,7 +330,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         //SEE LINE 173 for Singelton Proof
         scoreSingeltonProof.value = 0
-        dificulty.numLifes = 11
+        dificulty.numLifes = 10
+        dificulty.numTowers = 4
         
         //INitialize Labels
         lifeLabel = (childNode(withName: "livesLabel") as? SKLabelNode?)!
@@ -459,7 +455,9 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         numberOfTowers = numberOfTowers + dificulty.numTowers
         levelNumber = levelNumber + (dificulty.numTowers - 1)
         
-        if(levelNumber != 0 && levelNumber % 2 == 0 && dificulty.numTowers > 0){
+        //Increase Dificulty as Game goes on
+        //by decreasing the number of towers that can spawn
+        if(levelNumber != 0 && levelNumber % 2 == 0 && dificulty.numTowers > 2){
             
             dificulty.numTowers = dificulty.numTowers - 1
             
