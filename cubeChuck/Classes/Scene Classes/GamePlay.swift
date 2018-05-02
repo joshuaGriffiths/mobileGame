@@ -6,6 +6,16 @@
 //  Copyright © 2018 Joshua Griffiths. All rights reserved.
 //
 
+//THINGS TO TIGHTEN UP
+//1) Glitch where minicube can hit player (may be fixed by reset button playing on iphone or next bug fix)
+//2) Bug: Infinite Reduce the number of cubes that can spwan on each consecutive minicube towertop hit (reset it when player is tossed again
+//)
+
+
+
+
+
+
 import SpriteKit
 import GameplayKit
 
@@ -71,7 +81,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     let scoreSingeltonProof = Score.sharedInstance
     let dificulty = Dificulty.sharedInstance
     
-    //FlyWeights
+    //Factory Design Pattern
     var groundTiles: SKTileMapNode!
     
     //Limiters
@@ -275,14 +285,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 let row = groundTiles.tileRowIndex(fromPosition: minicubePos)
                 let tile = groundTiles.tileDefinition(atColumn: column, row: row)
                 
-                if tile == nil {
+                if tile == nil {//if you havent hit a tile
                     
                     //do nothing
-                } else {
+                } else {//youve hit a tile
                     
                     score.value += 1//increase score
-                    groundTiles.setTileGroup(nil, forColumn: column, row: row)
-                    //NSLog("hit")
+                    groundTiles.setTileGroup(nil, forColumn: column, row: row)//render that space null
                 }
                 
             }
@@ -603,11 +612,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         //Indicate there are no minicubes left three seconds after they have launched (the aproximate max time it takes for them to hit the ground)
         //This will insure that the player will not be shoved by a minicube
-//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
-//
-//            self.noMiniCubes = true
-//
-//        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
+
+            self.noMiniCubes = true
+
+        })
         
     }
     
