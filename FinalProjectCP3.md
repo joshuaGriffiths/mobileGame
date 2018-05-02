@@ -25,7 +25,7 @@ Planned for the next few days:
 //7) Encrypt High Score Data
 //11) Make explosion animations on impacts
 
-Testing: All testing was done through XCodes Performance Testing suit. The main outcome of this testing was adjusting the update() function. The update() function is called every frame. The conclusion was the less if statements and for loops in the update function the higher the frame rate would be and smoother the gameplay would look. Measures were taken to remove conditional statments and for loops out of the update functions and place that same functionality else where. As you can see from the results even in worst case scenrio (During 10+ minicube spawn after Tower Hit, Towers are in motion) the Frame Rate only drops by 2 frames per second. Before testing and with aditional componetns (mostly for loops) in the update function we had a frame rate drop of 5 in a worst case scneario. A few screenshots of this process were added in to the repository. The results of the tests were as follows:
+TESTING: All testing was done through XCodes Performance Testing suit. The main outcome of this testing was adjusting the update() function. The update() function is called every frame. The conclusion was the less if statements and for loops in the update function the higher the frame rate would be and smoother the gameplay would look. Measures were taken to remove conditional statments and for loops out of the update functions and place that same functionality else where. As you can see from the results even in worst case scenrio (During 10+ minicube spawn after Tower Hit, Towers are in motion) the Frame Rate only drops by 2 frames per second. Before testing and with aditional componetns (mostly for loops) in the update function we had a frame rate drop of 5 in a worst case scneario. A few screenshots of this process were added in to the repository. The results of the tests were as follows:
 
 During No GamePlay action: FPS: 12 fps (We strive to get as close to this as possible in all other gameplay actions)
 
@@ -42,7 +42,7 @@ In Main Menu: 12 fps
 
 
 
-Bugs:
+BUGS:
 
 //1) Bug: minicube can hit player =>may be fixed by playing on iphone or next bug fix
 //2) Bug (Rare): Infinite minicube spawn=> fixed by Reduce the number of cubes that can spwan on each consecutive minicube towertop hit (reset it when player is tossed again
@@ -50,4 +50,9 @@ Bugs:
 
 
 
+SECURITY: For security I chose to implement a cheeky workaround that encrypts user data and stores it perrsistantly across application launches. I do this by storing the higscore data as a UserData class. The UserData class encrypts the highscore so it cant be accessed unless specified by the application. Although it is just stack overflow I am taking this guys word for it and everything I read on the Swifts documentation verifies what he is saying in more words. https://stackoverflow.com/questions/28306517/secure-way-of-storing-a-highscore-in-ios-game 
+
+
 4)Screenshots of Testing and one new Screenshot showing Updated Game Scene In repository. 
+
+

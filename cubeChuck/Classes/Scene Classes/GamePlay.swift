@@ -74,6 +74,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     var gameOver_label: SKLabelNode?
     var finalScore_label: SKLabelNode?
     var finalScore_score: SKLabelNode?
+    var highScore_label: SKLabelNode?
+    var highScore_score: SKLabelNode?
     
     //Random Variables
     var pi = CGFloat(Double.pi)
@@ -359,9 +361,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //PRINT FINAL SCORE AND GO TO MAIN MENU
     func endGame(){
         
+        saveHighscore(highscore: score.value)
+        
         self.removeChildren(in: [self.childNode(withName: "Player")!])//remove all objects from teh scene
         
-        //PRINT GAME OVER
+        //PRINT GAME OVER, Current Score and HighScore
         gameOver_label =  (childNode(withName: "GameOver") as? SKLabelNode?)!
         gameOver_label?.zPosition = 6
         finalScore_label =  (childNode(withName: "FinalScore_label") as? SKLabelNode?)!
@@ -369,6 +373,17 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         finalScore_score =  (childNode(withName: "finalScore_score") as? SKLabelNode?)!
         finalScore_score?.text = String(score.value)
         finalScore_score?.zPosition = 6
+        
+        highScore_label =  (childNode(withName: "HighScore_label") as? SKLabelNode?)!
+        highScore_label?.zPosition = 6
+        highScore_score =  (childNode(withName: "highScore_score") as? SKLabelNode?)!
+        if let currentHighscore:Int = UserDefaults.standard.value(forKey: "highscore") as? Int {
+            
+            highScore_score?.text = String(currentHighscore)
+            highScore_score?.zPosition = 6
+        }
+        
+        
         
         //Go to Main Menu Scene after displaying final score for 4 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
@@ -625,6 +640,21 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
+    func saveHighscore(highscore:Int){
+        
+        //Check if there is already a highscore
+        if let currentHighscore:Int = UserDefaults.standard.value(forKey: "highscore") as? Int{
+            //If the new highscore is higher then the current highscore, save it.
+            if(highscore > currentHighscore){
+                UserDefaults.standard.setValue(highscore, forKey: "highscore")
+            }
+        }else{
+            //If there isn't a highscore set yet, every highscore is higher then nothing. So add it.
+            UserDefaults.standard.setValue(highscore, forKey: "highscore")
+        }
+    }
+    
+
     
     
     
