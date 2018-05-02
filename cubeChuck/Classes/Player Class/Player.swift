@@ -13,7 +13,7 @@ class Player: SKSpriteNode {
     var pi = CGFloat(Double.pi)
     static let sharedInstance = Player()//make player a singelton
     
-    //Initialize Player
+    //Initialize Player Attributes
     init(){
         let texture = SKTexture(imageNamed: "cube")//attatch image to player
         super.init(texture: texture, color: SKColor.clear, size: texture.size())//size of player is size of image

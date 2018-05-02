@@ -12,7 +12,7 @@ import GameplayKit
 //***GameMode***//
 //Indicates if we are currently playing the game
 enum GameState {
-
+    
     case playing
     case menu
     case setting
@@ -37,8 +37,9 @@ struct tch {
     static var end = CGPoint()
 }
 
-//Player Needs to be global for now
+//Player needs to be global for now
 let player:Player = Player()
+
 
 //Global limit variables need to be hard coded due to screen size
 let leftScreen = CGFloat(-620)
@@ -70,6 +71,10 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     let scoreSingeltonProof = Score.sharedInstance
     let dificulty = Dificulty.sharedInstance
     
+    //FlyWeights
+    var groundTiles: SKTileMapNode!
+    
+    //Limiters
     var hasGone = false  // to detect if cube has left
     var hitTower = false // to detect if a cube has hit a
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
@@ -89,7 +94,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         //Create physics contact world
         self.physicsWorld.contactDelegate = self
         
-       setupGame()
+        setupGame()
     }
     
     
@@ -116,15 +121,15 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                     hitTower = false//we have not hit a tower if were touching the screen
                     hasGone = false//we have not fired the player yet
                 }
-                
-                //BACK BUTTON
+                    
+                    //BACK BUTTON
                 else if atPoint(location).name == "back" {
                     
                     endGame()
                 }
-                
-                //In case a glitch in the game where you loose the cube off the screen
-                else if atPoint(location).name == "cubeReset" {
+                    
+                    //In case a glitch in the game where you loose the cube off the screen
+                else if atPoint(location).name == "cubeReset" && hasGone{
                     
                     player.physicsBody?.isDynamic = false
                     cubeReset()
@@ -220,7 +225,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                     //player.physicsBody?.isDynamic = true
                     
                 })
-
+                
                 dificulty.numLifes += 1//gives player an extra live :)
                 hitTower = true
                 
@@ -263,6 +268,22 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Handles when player missed the target, and when player hit the target, end of the game
     override func update(_ currentTime: TimeInterval) {
         
+        //Detect a collision on a tile
+        let minicubePos = self.childNode(withName: "Player")?.position
+        let column = groundTiles.tileColumnIndex(fromPosition: minicubePos!)
+        let row = groundTiles.tileRowIndex(fromPosition: minicubePos!)
+        let tile = groundTiles.tileDefinition(atColumn: column, row: row)
+        
+        if tile == nil {
+            //maxSpeed = waterMaxSpeed
+            NSLog("missed")
+        } else {
+            
+            //increase score
+            groundTiles.setTileGroup(nil, forColumn: column, row: row)
+            NSLog("hit")
+        }
+        
         if let cubePhysicsBody = player.physicsBody {
             
             //If player missed target (player has stoped moving and hitTower is false):
@@ -291,10 +312,10 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 
                 //Move the towers until the tower we hit is at the left of the screen
                 if hitStopper > leftScreen {
-                        
+                    
                     nextLevel()
                 }
-                
+                    
                 else {
                     //once the tower we hit is at the left of the screen we can shoot the player again and allow him to contact other objects
                     player.physicsBody?.affectedByGravity = false
@@ -306,7 +327,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
         }
         
-            
+        
         
         
     }
@@ -355,7 +376,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
-    //Sets up GamePlay
+    //SETS UP GAMPEPLAY
     func setupGame(){
         
         //SEE LINE 173 for Singelton Proof
@@ -363,6 +384,12 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         scoreSingeltonProof.value = 0
         dificulty.numLifes = 10
         dificulty.numTowers = 4
+        
+        guard let groundTiles = childNode(withName: "groundTiles")
+            as? SKTileMapNode else {
+                fatalError("Background node not loaded")
+        }
+        self.groundTiles = groundTiles
         
         //INitialize Labels
         lifeLabel = (childNode(withName: "livesLabel") as? SKLabelNode?)!
