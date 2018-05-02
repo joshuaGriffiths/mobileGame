@@ -10,10 +10,8 @@
 //1) Bug: minicube can hit player =>may be fixed by playing on iphone or next bug fix
 //2) Bug (Rare): Infinite minicube spawn=> fixed by Reduce the number of cubes that can spwan on each consecutive minicube towertop hit (reset it when player is tossed again
 //3) Bug: Tile hits arent always detected => fixed with new smaller tile graphics
-//4) Create Highscore Singelton
 //5) Move Score Singelton in to player class
 //6) Get rid of use of dificulty.numTowers and use local variables
-//7) Encrypt High Score Data
 //8) Make Bacground and tilemap move with towers so it looks like everything is moving
 //9) Use better programing grammar(move bucket spawn in to bucket class)
 //10) Make my own graphics

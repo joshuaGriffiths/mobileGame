@@ -20,9 +20,6 @@ Joshua Griffiths
 //8) Make Bacground and tilemap move with towers so it looks like everything is moving
 //9) Use better programing grammar(move bucket spawn in to bucket class)
 //10) Make my own graphics
-Planned for the next few days:
-//4) Create Highscore Singelton
-//7) Encrypt High Score Data
 //11) Make explosion animations on impacts
 
 TESTING: All testing was done through XCodes Performance Testing suit. The main outcome of this testing was adjusting the update() function. The update() function is called every frame. The conclusion was the less if statements and for loops in the update function the higher the frame rate would be and smoother the gameplay would look. Measures were taken to remove conditional statments and for loops out of the update functions and place that same functionality else where. As you can see from the results even in worst case scenrio (During 10+ minicube spawn after Tower Hit, Towers are in motion) the Frame Rate only drops by 2 frames per second. Before testing and with aditional componetns (mostly for loops) in the update function we had a frame rate drop of 5 in a worst case scneario. A few screenshots of this process were added in to the repository. The results of the tests were as follows:
