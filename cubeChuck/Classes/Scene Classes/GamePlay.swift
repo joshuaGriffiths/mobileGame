@@ -75,6 +75,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     var originalCubePos: CGPoint! //to allow for cube updating(should be removed)
     var numberOfTowers = 0
     var levelNumber = 0
+    var spawnOutside = 1
     
     
     
@@ -185,6 +186,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             if firstBody.node?.name == "Player" && secondBody.node?.name == "towertop\(i)" {
                 //NSLog("Player and TOP CONTACT")
                 
+                spawnOutside = 2
                 let towerY = (secondBody.node?.position.y)!
                 let towerX = secondBody.node?.position.x
                 
@@ -198,14 +200,13 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 player.physicsBody?.isDynamic = false
                 
                 spawnMiniCubes(towX: towerX!, towY: towerY)
+                self.spawnTowers()
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     
                     player.physicsBody?.affectedByGravity = false
                     player.physicsBody?.isDynamic = true
                     
-                    self.spawnTowers()
-                   
                 })
 
                 dificulty.numLifes += 1
@@ -395,7 +396,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             let tempTower:Tower = Tower()
             tempTower.name = "tower\(i+levelNumber)"
-            tempTower.position.x = randNumb(firstNum: CGFloat(640), secNum: CGFloat(-240))
+            tempTower.position.x = (randNumb(firstNum: CGFloat(640), secNum: CGFloat(-240))) * CGFloat(spawnOutside)
             tempTower.position.y = -250;
             tempTower.size.height = randNumb(firstNum: CGFloat(700), secNum: CGFloat(250))
             
