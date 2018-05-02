@@ -15,7 +15,8 @@
 //6) Get rid of use of dificulty.numTowers and use local variables
 //7) Encrypt High Score Data
 //8) Make Bacground and tilemap move with towers so it looks like everything is moving
-
+//9) Use better programing grammar(move bucket spawn in to bucket class)
+//10) Make my own graphics
 
 import SpriteKit
 import GameplayKit
