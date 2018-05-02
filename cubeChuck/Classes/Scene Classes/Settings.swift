@@ -19,10 +19,10 @@ class Settings: SKScene {
     
     override func didMove(to view: SKView) {
         
-        lifeLabel = childNode(withName: "numLives") as? SKLabelNode!
-        easyLabel = childNode(withName: "easyCheck") as? SKLabelNode!
-        mediumLabel = childNode(withName: "mediumCheck") as? SKLabelNode!
-        hardLabel = childNode(withName: "hardCheck") as? SKLabelNode!
+        lifeLabel = (childNode(withName: "numLives") as? SKLabelNode?)!
+        easyLabel = (childNode(withName: "easyCheck") as? SKLabelNode?)!
+        mediumLabel = (childNode(withName: "mediumCheck") as? SKLabelNode?)!
+        hardLabel = (childNode(withName: "hardCheck") as? SKLabelNode?)!
         lifeLabel?.text = String(dificulty.numLifes)
         
         if dificulty.numTowers == 1 {

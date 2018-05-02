@@ -18,8 +18,17 @@ enum GameState {
     static var current = GameState.playing
 }
 
+
+struct ColliderType {
+    
+    static let PLAYER: UInt32 = 0;
+    static let TOWER: UInt32 = 1;
+    static let MINICUBE: UInt32 = 2;
+    static let TOWERTOP: UInt32 = 3
+}
+
 //***Touch***//
-struct tch { //start and end touch points
+struct tch { //used to mark start and end of users touch on screen
     
     static var start = CGPoint()//has x and y cordinates
     static var end = CGPoint()
@@ -145,7 +154,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         var firstBody = SKPhysicsBody();
         var secondBody = SKPhysicsBody();
-        let numberOfTowers = dificulty.numTowers
+        //let numberOfTowers = dificulty.numTowers
         
         //This is to detect what hits what
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
@@ -186,9 +195,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 
                 spawnMiniCubes(towX: towerX!, towY: towerY)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(10), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     
-                    //touchedTowerTop?.name = "touchedTower"
                     player.physicsBody?.affectedByGravity = false
                     player.physicsBody?.isDynamic = true
                     
@@ -204,6 +212,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             if firstBody.node?.name == "minicube" && secondBody.node?.name == "towertop\(i)" {
                 //NSLog("minicube and tower Conatact")
                 
+                removeChildren(in: [self.childNode(withName: "minicube")!])
                 let towerY = (secondBody.node?.position.y)! + 20
                 let towerX = secondBody.node?.position.x
                 
@@ -294,11 +303,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         self.removeChildren(in: [self.childNode(withName: "Player")!])
         
         //PRINT GAME OVER
-        gameOver_label =  childNode(withName: "GameOver") as? SKLabelNode!
+        gameOver_label =  (childNode(withName: "GameOver") as? SKLabelNode?)!
         gameOver_label?.zPosition = 6
-        finalScore_label =  childNode(withName: "FinalScore_label") as? SKLabelNode!
+        finalScore_label =  (childNode(withName: "FinalScore_label") as? SKLabelNode?)!
         finalScore_label?.zPosition = 6
-        finalScore_score =  childNode(withName: "finalScore_score") as? SKLabelNode!
+        finalScore_score =  (childNode(withName: "finalScore_score") as? SKLabelNode?)!
         finalScore_score?.text = String(score.value)
         finalScore_score?.zPosition = 6
         
@@ -329,9 +338,9 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         dificulty.numLifes = 11
         
         //INitialize Labels
-        lifeLabel = childNode(withName: "livesLabel") as? SKLabelNode!
+        lifeLabel = (childNode(withName: "livesLabel") as? SKLabelNode?)!
         lifeLabel?.text = String(dificulty.numLifes)
-        scoreLabel = childNode(withName: "scoreLabel") as? SKLabelNode!
+        scoreLabel = (childNode(withName: "scoreLabel") as? SKLabelNode?)!
         scoreLabel?.text = String(scoreSingeltonProof.value)
         
         //Spawn towers and players
@@ -359,15 +368,15 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             let moveTop = self.childNode(withName: "towertop\(i)")
             let moveTopLeft = self.childNode(withName: "towerleft\(i)")
             let moveTopRight = self.childNode(withName: "towerright\(i)")
-            moveTower?.position.x = (moveTower?.position.x)! - CGFloat(8)
-            moveTop?.position.x = (moveTop?.position.x)! - CGFloat(8)
-            moveTopRight?.position.x = (moveTopRight?.position.x)! - CGFloat(8)
-            moveTopLeft?.position.x = (moveTopLeft?.position.x)! - CGFloat(8)
+            moveTower?.position.x = (moveTower?.position.x)! - CGFloat(20)
+            moveTop?.position.x = (moveTop?.position.x)! - CGFloat(20)
+            moveTopRight?.position.x = (moveTopRight?.position.x)! - CGFloat(20)
+            moveTopLeft?.position.x = (moveTopLeft?.position.x)! - CGFloat(20)
             
         }
         
-        player.position.x = player.position.x - CGFloat(8)
-        hitStopper = hitStopper - CGFloat(8)
+        player.position.x = player.position.x - CGFloat(20)
+        hitStopper = hitStopper - CGFloat(20)
         originalCubePos = player.position
     }
     
@@ -450,6 +459,12 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         numberOfTowers = numberOfTowers + dificulty.numTowers
         levelNumber = levelNumber + (dificulty.numTowers - 1)
         
+        if(levelNumber != 0 && levelNumber % 2 == 0 && dificulty.numTowers > 0){
+            
+            dificulty.numTowers = dificulty.numTowers - 1
+            
+        }
+        
     }
     
     
@@ -482,8 +497,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         //Adjusts Number of Cubes and Angular Velocity Upon Ejection
         let numberOfCubes = 3
-        let xSpan = 10 //distance the minicubes will travel in the x direction
-        let ySpan = 12 //distance the cubes will travel upward
+        let xSpan = 13 //distance the minicubes will travel in the x direction
+        let ySpan = 15 //distance the cubes will travel upward
         
         for _ in 1..<numberOfCubes+1 {
             
