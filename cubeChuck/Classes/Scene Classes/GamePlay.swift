@@ -250,7 +250,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         //A minicube coming in contact with the ground determines the score of the game
         if firstBody.node?.name == "minicube" && secondBody.node?.name == "ground" {
             //NSLog("minicube and ground Conatact")
-            score.value += 1
+            //score.value += 1
             scoreLabel?.text = String(score.value)
             removeChildren(in: [self.childNode(withName: "minicube")!])//remove minicube once its contacted the ground
             
@@ -268,24 +268,27 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Handles when player missed the target, and when player hit the target, end of the game
     override func update(_ currentTime: TimeInterval) {
         
-        //Detect a collision on a tile
-        let minicubePos = self.childNode(withName: "Player")?.position
-        let column = groundTiles.tileColumnIndex(fromPosition: minicubePos!)
-        let row = groundTiles.tileRowIndex(fromPosition: minicubePos!)
-        let tile = groundTiles.tileDefinition(atColumn: column, row: row)
-        
-        if tile == nil {
-            //maxSpeed = waterMaxSpeed
-            NSLog("missed")
-        } else {
-            
-            //increase score
-            groundTiles.setTileGroup(nil, forColumn: column, row: row)
-            NSLog("hit")
-        }
+            //Detect a collision on a tile
+            if let minicubePos = self.childNode(withName: "minicube")?.position {
+                
+                let column = groundTiles.tileColumnIndex(fromPosition: minicubePos)
+                let row = groundTiles.tileRowIndex(fromPosition: minicubePos)
+                let tile = groundTiles.tileDefinition(atColumn: column, row: row)
+                
+                if tile == nil {
+                    
+                    //do nothing
+                } else {
+                    
+                    score.value += 1//increase score
+                    groundTiles.setTileGroup(nil, forColumn: column, row: row)
+                    //NSLog("hit")
+                }
+                
+            }
         
         if let cubePhysicsBody = player.physicsBody {
-            
+    
             //If player missed target (player has stoped moving and hitTower is false):
             if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity == 0.0 && hasGone && !hitTower {
                 
@@ -576,6 +579,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Spawn the minicubes on contact
     func spawnMiniCubes(towX: CGFloat, towY: CGFloat){
         
+        noMiniCubes = false//indicating there are minicubes being shot
+        
         //Adjusts Number of Cubes and Angular Velocity Upon Ejection
         let numberOfCubes = 3
         let xSpan = 13 //distance the minicubes will travel in the x direction
@@ -585,6 +590,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             //Spawn minicubes at hit tower
             let tempMiniCube:MiniCube = MiniCube()
+            tempMiniCube.name = "minicube"
             tempMiniCube.position.x = towX
             tempMiniCube.position.y = towY
             
@@ -597,11 +603,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         
         //Indicate there are no minicubes left three seconds after they have launched (the aproximate max time it takes for them to hit the ground)
         //This will insure that the player will not be shoved by a minicube
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
-            
-            self.noMiniCubes = true
-            
-        })
+//        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
+//
+//            self.noMiniCubes = true
+//
+//        })
         
     }
     
