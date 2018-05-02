@@ -76,17 +76,17 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     var numberOfTowers = 0 //number of towers there are
     var levelNumber = 0 //to indicate the level we are on
     var spawnOutside = 1 //to indicate if this was the first toss or not
-    var noMiniCubes = true
+    var noMiniCubes = true//to indicate if there are any minicubes left on the screen
     
     
     
     
     
     
-    //SET UP SCENE
+    //SET UP SCENE when this gamescene is presented
     override func didMove(to view: SKView) {
         
-        //Create contact world
+        //Create physics contact world
         self.physicsWorld.contactDelegate = self
         
        setupGame()
@@ -113,8 +113,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 if player.contains(location){
                     
                     tch.start = location
-                    hitTower = false
-                    hasGone = false
+                    hitTower = false//we have not hit a tower if were touching the screen
+                    hasGone = false//we have not fired the player yet
                 }
                 
                 //BACK BUTTON
@@ -141,8 +141,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             if GameState.current == .playing && !player.contains(location) {
                 
                 tch.end = location
-                player.fire()
-                hasGone = true
+                player.fire()//fire the player once the screen is released
+                hasGone = true//the player has gone
                 
             }
         }
@@ -155,14 +155,14 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
-    //DETECTING COLLISION
+    //DETECTING COLLISIONS OF OBJECTS IN GAME
     func didBegin(_ contact: SKPhysicsContact) {
         
         var firstBody = SKPhysicsBody();
         var secondBody = SKPhysicsBody();
         //let numberOfTowers = dificulty.numTowers
         
-        //This is to detect what hits what
+        //This is to detect what hits what first
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             firstBody = contact.bodyA
             secondBody = contact.bodyB
@@ -182,26 +182,28 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
         }
         
+        //Iterate through all the towers to check for a contact
         for i in 1..<dificulty.numTowers + levelNumber {
             
             if firstBody.node?.name == "Player" && secondBody.node?.name == "towertop\(i)" {
                 //NSLog("Player and TOP CONTACT")
                 
-                spawnOutside = 2
+                spawnOutside = 2//after the first hit we can spawn towers outside screen so they move in to the screen during call to nextLevel()
                 let towerY = (secondBody.node?.position.y)!
                 let towerX = secondBody.node?.position.x
                 
-                hitStopper = towerX!
+                hitStopper = towerX!//to mark where we hit a tower along the x axis
                 
+                //Remove the hit towers bucket so that it doesnt come in contact with the player again
                 removeChildren(in: [self.childNode(withName: "towertop\(i)")!])
                 removeChildren(in: [self.childNode(withName: "towerright\(i)")!])
                 removeChildren(in: [self.childNode(withName: "towerleft\(i)")!])
                 
-                originalCubePos = player.position
-                player.physicsBody?.isDynamic = false
+                originalCubePos = player.position//to move the player after a missed shot
+                player.physicsBody?.isDynamic = false//so the minicubes cant come in contact with the player
                 
-                spawnMiniCubes(towX: towerX!, towY: towerY)
-                self.spawnTowers()
+                spawnMiniCubes(towX: towerX!, towY: towerY)//spawn minicubes at the top of the tower
+                self.spawnTowers()//spawn more towers for next level
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     
@@ -210,16 +212,18 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                     
                 })
 
-                dificulty.numLifes += 1
+                dificulty.numLifes += 1//gives player an extra live :)
                 hitTower = true
                 
             }
             
             if firstBody.node?.name == "minicube" && secondBody.node?.name == "towertop\(i)" {
                 //NSLog("minicube and tower Conatact")
-                noMiniCubes = false
+                noMiniCubes = false//mark that there are infact minicubes around
                 
-                removeChildren(in: [self.childNode(withName: "minicube")!])
+                removeChildren(in: [self.childNode(withName: "minicube")!])//in an effort to stop a bug where minicubes get caught in box and spawn infinetly
+                
+                //Spawn more minicubes!
                 let towerY = (secondBody.node?.position.y)! + 20
                 let towerX = secondBody.node?.position.x
                 
@@ -229,11 +233,12 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
         }
         
+        //A minicube coming in contact with the ground determines the score of the game
         if firstBody.node?.name == "minicube" && secondBody.node?.name == "ground" {
             //NSLog("minicube and ground Conatact")
             score.value += 1
             scoreLabel?.text = String(score.value)
-            removeChildren(in: [self.childNode(withName: "minicube")!])
+            removeChildren(in: [self.childNode(withName: "minicube")!])//remove minicube once its contacted the ground
             
         }
     }
@@ -245,27 +250,28 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
-    //Replace the cube
+    //Is called every frame refresh
+    //Handles when player missed the target, and when player hit the target, end of the game
     override func update(_ currentTime: TimeInterval) {
         
         if let cubePhysicsBody = player.physicsBody {
             
-            //If we have missed
+            //If player missed target (player has stoped moving and hitTower is false):
             if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity == 0.0 && hasGone && !hitTower {
                 
-                dificulty.numLifes -= 1
+                dificulty.numLifes -= 1//decrease number of lives
                 shotCounter += 1
-                lifeLabel?.text = String(dificulty.numLifes)
+                lifeLabel?.text = String(dificulty.numLifes)//redisplay number of lives
                 
+                //If player has no more lives end the game
                 if dificulty.numLifes == 0 {
                     
                     endGame()
                 }
                 
-                
-                player.physicsBody?.affectedByGravity = false
-                player.position = originalCubePos
-                hasGone = false
+                player.physicsBody?.affectedByGravity = false//so that player doesnt fall out of sky when respawned
+                player.position = originalCubePos//move the player back to position where he first shot from
+                hasGone = false//
                 
             }
             
@@ -273,15 +279,15 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             if cubePhysicsBody.velocity.dx <= 0.1 && cubePhysicsBody.velocity.dy <= 0.1 && cubePhysicsBody.angularVelocity == 0.0 && hasGone && hitTower {
                 
                 shotCounter += 1
-                //hasGone = false
                 
+                //Move the towers until the tower we hit is at the left of the screen
                 if hitStopper > leftScreen {
                         
                     nextLevel()
                 }
                 
-                else if (noMiniCubes){
-                    
+                else {
+                    //once the tower we hit is at the left of the screen we can shoot the player again and allow him to contact other objects
                     player.physicsBody?.affectedByGravity = false
                     player.physicsBody?.isDynamic = true
                     
@@ -306,10 +312,10 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
-    //PRINT AND GO TO MAIN MENU
+    //PRINT FINAL SCORE AND GO TO MAIN MENU
     func endGame(){
         
-        self.removeChildren(in: [self.childNode(withName: "Player")!])
+        self.removeChildren(in: [self.childNode(withName: "Player")!])//remove all objects from teh scene
         
         //PRINT GAME OVER
         gameOver_label =  (childNode(withName: "GameOver") as? SKLabelNode?)!
@@ -320,6 +326,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         finalScore_score?.text = String(score.value)
         finalScore_score?.zPosition = 6
         
+        //Go to Main Menu Scene after displaying final score for 4 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(4), execute: {
             
             if let scene = MainMenu(fileNamed: "MainMenuScene"){
@@ -328,7 +335,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 self.view?.presentScene(scene, transition: SKTransition.doorsCloseVertical(withDuration: TimeInterval(1)))
             }
         })
-        //Go to Main Menu Scene
+        
         
     }
     
@@ -339,10 +346,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
-    
+    //Sets up GamePlay
     func setupGame(){
         
         //SEE LINE 173 for Singelton Proof
+        //Set singelton values
         scoreSingeltonProof.value = 0
         dificulty.numLifes = 10
         dificulty.numTowers = 4
@@ -367,28 +375,29 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     
     
-    
+    //Moves the towers across the screen to the starting position again
     func nextLevel(){
         
         //let numberOfTowers = dificulty.numTowers
         
+        //Move all towers and bucketsin the scene
         for i in 1..<numberOfTowers {
             
-            let moveTower = self.childNode(withName: "tower\(i)")
+            let moveTower = self.childNode(withName: "tower\(i)")//recognize the towers
             let moveTop = self.childNode(withName: "towertop\(i)")
             let moveTopLeft = self.childNode(withName: "towerleft\(i)")
             let moveTopRight = self.childNode(withName: "towerright\(i)")
-            moveTower?.position.x = (moveTower?.position.x)! - CGFloat(20)
+            moveTower?.position.x = (moveTower?.position.x)! - CGFloat(20)//move 20 pixels to the left
             moveTop?.position.x = (moveTop?.position.x)! - CGFloat(20)
             moveTopRight?.position.x = (moveTopRight?.position.x)! - CGFloat(20)
             moveTopLeft?.position.x = (moveTopLeft?.position.x)! - CGFloat(20)
             
         }
         
-        player.position.x = player.position.x - CGFloat(20)
-        player.physicsBody?.isDynamic = false
-        hitStopper = hitStopper - CGFloat(20)
-        originalCubePos = player.position
+        player.position.x = player.position.x - CGFloat(20)//move player 20 pixels to the left
+        player.physicsBody?.isDynamic = false//while towers are moving make sure player cant come in contact with anything
+        hitStopper = hitStopper - CGFloat(20)//indicates how far we have moved
+        originalCubePos = player.position//for moving the player on a missed toss
     }
     
     
@@ -406,29 +415,36 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //Spawn Towers that will have the target
     func spawnTowers(){
         
+        //Number of towers to spawn
         for i in 1..<dificulty.numTowers {
             
+            //Spawn a Tower object randomly on map
             let tempTower:Tower = Tower()
-            tempTower.name = "tower\(i+levelNumber)"
+            tempTower.name = "tower\(i+levelNumber)"//Use of level number to keep track of spawns after the first level (4,5,6, ...)
+            //Spawn tower randomly between bounds 640 and -240 which are hardcoded positions on the screen
             tempTower.position.x = (randNumb(firstNum: CGFloat(640), secNum: CGFloat(-240))) * CGFloat(spawnOutside)
             tempTower.position.y = -250;
-            tempTower.size.height = randNumb(firstNum: CGFloat(700), secNum: CGFloat(250))
+            tempTower.size.height = randNumb(firstNum: CGFloat(700), secNum: CGFloat(250))//randomly generate tower height
             
-            //MOVE TO BUCKET CLASS
-            towerTop = SKShapeNode(rectOf: CGSize(width: 4*tempTower.size.width, height: 3))
+            //Spawn Bucket on top of each tower
+            
+            //Spawn bucket bottem
+            towerTop = SKShapeNode(rectOf: CGSize(width: 4*tempTower.size.width, height: 3))//make size of bucket 4 times width of tower
             towerTop.fillColor = .red
             towerTop.name = "towertop\(i+levelNumber)"
             towerTop.strokeColor = .clear
-            towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y + tempTower.size.height/2)
-            towerTop.zPosition = 10
-            towerTop.alpha = 1
+            towerTop.position = CGPoint(x: tempTower.position.x, y: tempTower.position.y + tempTower.size.height/2)//position bucket bottem on top of tower
+            towerTop.zPosition = 10//layer on screen
+            towerTop.alpha = 1//togel visibility
             
-            towerTop.physicsBody = SKPhysicsBody(rectangleOf: towerTop.frame.size)
-            towerTop.physicsBody? .categoryBitMask = ColliderType.TOWERTOP
-            towerTop.physicsBody? .contactTestBitMask = ColliderType.PLAYER
+            //Create the physics body of the tower
+            towerTop.physicsBody = SKPhysicsBody(rectangleOf: towerTop.frame.size)//make the bounding box the size of the shape node
+            towerTop.physicsBody? .categoryBitMask = ColliderType.TOWERTOP //to recognize a collision
+            towerTop.physicsBody? .contactTestBitMask = ColliderType.PLAYER//to recognize a collision
             towerTop.physicsBody? .affectedByGravity = false
-            towerTop.physicsBody? .isDynamic = false
+            towerTop.physicsBody? .isDynamic = false //doesnt move on contacts
             
+            //Create left side of box
             towerLeft = SKShapeNode(rectOf: CGSize(width: 3, height: towerTop.frame.size.width/2))
             towerLeft.fillColor = .red
             towerLeft.name = "towerleft\(i+levelNumber)"
@@ -444,6 +460,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             towerLeft.physicsBody? .isDynamic = false
             towerLeft.zRotation = pi / 70
             
+            //Create right side of box
             towerRight.physicsBody = SKPhysicsBody(rectangleOf: towerRight.frame.size)
             towerRight.physicsBody? .categoryBitMask = ColliderType.TOWER
             towerRight.physicsBody? .contactTestBitMask = ColliderType.PLAYER
@@ -459,7 +476,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             towerRight.zPosition = 10
             towerRight.alpha = 1 //do we want to see grids or not
             
-            
+            //Add children to the scene
             addChild(towerLeft)
             addChild(towerRight)
             addChild(towerTop)
@@ -468,7 +485,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
         }
         
         numberOfTowers = numberOfTowers + dificulty.numTowers
-        levelNumber = levelNumber + (dificulty.numTowers - 1)
+        levelNumber = levelNumber + (dificulty.numTowers - 1)//Increase the level number by how many towers you just spawned so that when your iterating through the towers you can hit towers (3,4,5,...)
         
         //Increase Dificulty as Game goes on
         //by decreasing the number of towers that can spawn
@@ -493,7 +510,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     
     //Spawn the player
     func spawnPlayer(){
-        originalCubePos = player.position
+        originalCubePos = player.position //For moving the player after a missed toss
         addChild(player)
     }
     
@@ -527,6 +544,8 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
         }
         
+        //Indicate there are no minicubes left three seconds after they have launched (the aproximate max time it takes for them to hit the ground)
+        //This will insure that the player will not be shoved by a minicube
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3), execute: {
             
             self.noMiniCubes = true

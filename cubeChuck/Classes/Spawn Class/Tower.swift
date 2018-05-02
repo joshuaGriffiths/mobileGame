@@ -13,6 +13,8 @@ import SpriteKit
 
 class Tower: SKSpriteNode {
     
+    //Initializes Tower Class Object
+    //See Player Class to understand what all this means
     init() {
         let texture = SKTexture(imageNamed: "tower")
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
