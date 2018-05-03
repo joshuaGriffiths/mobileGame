@@ -22,20 +22,20 @@ Joshua Griffiths
 //10) Make my own graphics
 //11) Make explosion animations on impacts
 
-TESTING: All testing was done through XCodes Performance Testing suit. The main outcome of this testing was adjusting the update() function. The update() function is called every frame. The conclusion was the less if statements and for loops in the update function the higher the frame rate would be and smoother the gameplay would look. Measures were taken to remove conditional statments and for loops out of the update functions and place that same functionality else where. As you can see from the results even in worst case scenrio (During 10+ minicube spawn after Tower Hit, Towers are in motion) the Frame Rate only drops by 2 frames per second. Before testing and with aditional componetns (mostly for loops) in the update function we had a frame rate drop of 5 in a worst case scneario. A few screenshots of this process were added in to the repository. The results of the tests were as follows:
+TESTING: All testing was done through XCodes Performance Testing suit. The main outcome of this testing was adjusting the update() function. The update() function is called every frame. The conclusion was the less if statements and for loops in the update function the higher the frame rate would be and smoother the gameplay would look. Measures were taken to remove conditional statments and for loops out of the update functions and place that same functionality else where. As you can see from the results even in worst case scenrio (During 10+ minicube spawn after Tower Hit, Towers are in motion) the Frame Rate only drops by 5 frames per second. Before testing and with aditional componetns (mostly for loops) in the update function we had a frame rate drop of 30 frames per second in a worst case scneario. A few screenshots of this process were added in to the repository. The results of the tests were as follows:
 
 During No GamePlay action: FPS: 12 fps (We strive to get as close to this as possible in all other gameplay actions)
 
-During Toss No Tower Hit: 11.6 fps
+During Toss No Tower Hit: 60 fps
 
-Durring Towers in motion 3 or less minicube spawns:  11.4 fps
+Durring Towers in motion 3 or less minicube spawns:  59 fps
 
-During 10+ minicube spawn after Tower Hit, Towers are in motion: 10 fps
+During 10+ minicube spawn after Tower Hit, Towers are in motion: 56 fps
 
 
-During Closing Screen: 12 fps
+During Closing Screen: 60 fps
 
-In Main Menu: 12 fps
+In Main Menu: 60 fps
 
 
 

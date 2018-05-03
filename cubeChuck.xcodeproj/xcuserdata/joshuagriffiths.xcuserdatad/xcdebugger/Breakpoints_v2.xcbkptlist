@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.768618"
+            timestampString = "547015044.456859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "517"
-            endingLineNumber = "517"
+            startingLineNumber = "516"
+            endingLineNumber = "516"
             landmarkName = "spawnTowers()"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.769682"
+            timestampString = "547015044.457419"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.7700731"
+            timestampString = "547015044.457786"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -90,39 +90,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.770427"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
-            landmarkName = "didBegin(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.7707731"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
-            landmarkName = "didBegin(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.771117"
+            timestampString = "547015044.458106"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "207"
@@ -138,11 +106,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.771457"
+            timestampString = "547015044.458425"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "626"
-            endingLineNumber = "626"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "didBegin(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
+            timestampString = "547015044.458744"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "didBegin(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
+            timestampString = "547015044.459058"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "625"
+            endingLineNumber = "625"
             landmarkName = "spawnMiniCubes(towX:towY:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.771806"
+            timestampString = "547015044.45936"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
             landmarkName = "update(_:)"
             landmarkType = "7">
             <Actions>
@@ -177,11 +177,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.772145"
+            timestampString = "547015044.459668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -193,11 +193,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.7724839"
+            timestampString = "547015044.459978"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "330"
-            endingLineNumber = "330"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -209,11 +209,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.772828"
+            timestampString = "547015044.460273"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "323"
-            endingLineNumber = "323"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -225,11 +225,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.7731659"
+            timestampString = "547015044.460569"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "518"
-            endingLineNumber = "518"
+            startingLineNumber = "517"
+            endingLineNumber = "517"
             landmarkName = "spawnTowers()"
             landmarkType = "7">
          </BreakpointContent>
@@ -241,11 +241,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.773502"
+            timestampString = "547015044.46086"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -257,11 +257,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.773833"
+            timestampString = "547015044.461158"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -273,11 +273,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.7741621"
+            timestampString = "547015044.461453"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -353,11 +353,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.774604"
+            timestampString = "547015044.461809"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "559"
-            endingLineNumber = "559"
+            startingLineNumber = "558"
+            endingLineNumber = "558"
             landmarkName = "spawnTowers()"
             landmarkType = "7">
          </BreakpointContent>
@@ -369,7 +369,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.77494"
+            timestampString = "547015044.462101"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "344"
+            endingLineNumber = "344"
+            landmarkName = "update(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
+            timestampString = "547015044.462396"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "345"
@@ -385,11 +401,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.775275"
+            timestampString = "547015044.462693"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
+            startingLineNumber = "336"
+            endingLineNumber = "336"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -401,11 +417,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.7756079"
+            timestampString = "547015044.462986"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -417,11 +433,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.775998"
+            timestampString = "547015044.46328"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
+            startingLineNumber = "305"
+            endingLineNumber = "305"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -433,27 +449,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.776336"
+            timestampString = "547015044.463568"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "306"
-            endingLineNumber = "306"
-            landmarkName = "update(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.77667"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "507"
-            endingLineNumber = "507"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "spawnTowers()"
             landmarkType = "7">
          </BreakpointContent>
@@ -465,7 +465,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.777002"
+            timestampString = "547015044.46386"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "508"
+            endingLineNumber = "508"
+            landmarkName = "spawnTowers()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
+            timestampString = "547015044.464149"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "509"
@@ -481,27 +497,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.777331"
+            timestampString = "547015044.464431"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "510"
-            endingLineNumber = "510"
-            landmarkName = "spawnTowers()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.777661"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
             landmarkName = "GamePlay"
             landmarkType = "3">
          </BreakpointContent>
@@ -513,11 +513,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.777998"
+            timestampString = "547015044.464721"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -529,11 +529,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.77833"
+            timestampString = "547015044.465009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
+            startingLineNumber = "339"
+            endingLineNumber = "339"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -561,11 +561,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.778722"
+            timestampString = "547015044.465315"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
             landmarkName = "update(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -577,11 +577,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.779047"
+            timestampString = "547015044.465603"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
+            startingLineNumber = "362"
+            endingLineNumber = "362"
             landmarkName = "endGame()"
             landmarkType = "7">
          </BreakpointContent>
@@ -593,11 +593,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.779355"
+            timestampString = "547015044.46589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "365"
-            endingLineNumber = "365"
+            startingLineNumber = "364"
+            endingLineNumber = "364"
             landmarkName = "endGame()"
             landmarkType = "7">
          </BreakpointContent>
@@ -609,7 +609,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.779637"
+            timestampString = "547015044.4661781"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "650"
+            endingLineNumber = "650"
+            landmarkName = "saveHighscore(highscore:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
+            timestampString = "547015044.466466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "651"
@@ -625,12 +641,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cubeChuck/Classes/Scene Classes/GamePlay.swift"
-            timestampString = "546989598.7799211"
+            timestampString = "547015044.466747"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "652"
-            endingLineNumber = "652"
-            landmarkName = "saveHighscore(highscore:)"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
+            landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

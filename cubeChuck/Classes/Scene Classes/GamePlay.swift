@@ -120,14 +120,14 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     //REGISTER A TOUCH ON THE SCREEN
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        for touch in touches {
+        if let touch = touches.first {
             
             let location = touch.location(in: self)
             
             //IF WE TOUCH THE CUBE
             if GameState.current == .playing {
                 
-                if player.contains(location){
+                if player.contains(location) {
                     
                     tch.start = location
                     hitTower = false//we have not hit a tower if were touching the screen
@@ -153,6 +153,11 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        let location = touch?.location(in: self)
+        tch.end = location!
+    }
     
     
     
@@ -166,7 +171,7 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
             
             if GameState.current == .playing && !player.contains(location) {
                 
-                tch.end = location
+                //tch.end = location
                 player.fire()//fire the player once the screen is released
                 hasGone = true//the player has gone
                 
@@ -231,12 +236,6 @@ class GamePlay: SKScene, SKPhysicsContactDelegate {
                 spawnMiniCubes(towX: towerX!, towY: towerY)//spawn minicubes at the top of the tower
                 self.spawnTowers()//spawn more towers for next level
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
-                    
-                    //player.physicsBody?.affectedByGravity = false
-                    //player.physicsBody?.isDynamic = true
-                    
-                })
                 
                 dificulty.numLifes += 1//gives player an extra live :)
                 hitTower = true
